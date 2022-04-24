@@ -1,12 +1,11 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Sidebar.module.css'
+import React, { Component } from 'react'
 
-export default function Sidebar(props) {
-   
-  return (
-    <div>
-      <h1>Hello Sidebar {props.data}</h1>
-    </div>
-  )
+export class Sidebar extends Component {
+  render() {
+    return (
+      <div>sidebar</div>
+    )
+  }
 }
+
+export default Sidebar
