@@ -1,0 +1,31 @@
+.greeting p {
+  color: var(--gray);
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 2px solid black;
+  border-radius: 15px;
+  margin: 1rem;
+  padding: 0 0.5rem;
+}
