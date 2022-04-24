@@ -1,0 +1,35 @@
+.sidebarContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 4rem;
+  justify-content: space-between;
+  height: 100vh;
+  border: 2px solid var(--lightgray);
+}
+
+.mainIcons {
+  display: flex;
+  flex-direction: column;
+  gap: 8vh;
+}
+
+.sidebarContainer span:hover{
+  cursor: pointer;
+}
+
+.logo {
+  margin-bottom: 3rem;
+}
+
+.active {
+  color: var(--purple);
+}
+
+.inactive {
+  color: var(--gray);
+}
+
+.inactive:hover {
+  color: var(--purple);
+  transition: all 200ms ease-in-out;
+}
