@@ -9,32 +9,35 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faBell, faUserDoctor, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 
 // Change this according to how you would fetch the doctor's name from DB
-const doctor = {firstName: "Han", lastName: "Jisung"};
 
-export class Header extends Component {
+function Header() {
+  const doctor = {firstName: "Han", lastName: "Jisung"};
+  const size = "lg"
+  
+  return (
+    <div className={styles.container}>
 
-  render() {
-    return (
-      <div className={styles.container}>
+        <div className={styles.linedContainer}>
+          <div className={styles.greeting}>
+            <h2>Good day, Dr. {doctor.firstName} {doctor.lastName}</h2>
+            <p>Start your day with a SMILE beacause HAPPINESS is the <br/> best MEDICINE!</p>
+          </div>
 
-        <div className={styles.greeting}>
-          <h2>Good day, Dr. {doctor.firstName} {doctor.lastName}</h2>
-          <p>Start your day with a SMILE beacause HAPPINESS is the <br/> best MEDICINE!</p>
-        </div>
-
-        <div className={styles.icon}>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-          <FontAwesomeIcon icon={faBell} />
-        </div>
-        
-        <div className={styles.profile}>
-          <FontAwesomeIcon icon={faUserDoctor} />
-          <p>Dr. {doctor.firstName}</p>
-          <FontAwesomeIcon icon={faAngleDown} />
+          <div className={styles.end}>
+            <div className={styles.icon}>
+              <FontAwesomeIcon icon={faMagnifyingGlass} size={size}/>
+              <FontAwesomeIcon icon={faBell} size={size}/>
+            </div>
+            
+            <div className={styles.profile}>
+              <FontAwesomeIcon icon={faUserDoctor} />
+              <p>Dr. {doctor.firstName}</p>
+              <FontAwesomeIcon icon={faAngleDown} className={styles.profileIcon} />
+            </div>
+          </div>
         </div>
       </div>
-    )
-  }
+  )
 }
 
 export default Header
