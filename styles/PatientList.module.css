@@ -1,0 +1,32 @@
+.patient {
+  border: 2px solid var(--lightgray);
+  width: 20rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.patientDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.patient span {
+  font-size: 14px;
+}
+
+.patientAppointment {
+  background-color: #EBEAFF;
+  color: #575CE3;
+  border-radius: 10px;
+  padding: 0.4rem 0.8rem;
+  font-size: 14px;
+}
+
+.list {
+  margin: 0 2rem;
+}
