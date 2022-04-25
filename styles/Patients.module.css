@@ -1,0 +1,59 @@
+.patientsContainer {
+  display: flex;
+}
+
+.leftContainer {
+  width: 100%;
+}
+
+.table {
+  margin: 2rem;
+}
+
+.actions {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.edit {
+  color: #A0A4A8;
+}
+
+.delete {
+  color: #FF6760;
+}
+
+.edit:hover {
+  cursor: pointer;
+  color: #7a7c7f;
+  transition: all 300ms ease-in-out;
+}
+
+.delete:hover {
+  cursor: pointer;
+  color: #d05851;
+  transition: all 300ms ease-in-out;
+}
+
+.pagination {
+  font-family: 'Lato', sans-serif;
+}
+
+.pagination button {
+  background-color: white;
+  border: 1px solid var(--lightgray);
+  padding: 0.5rem;
+}
+
+.pagination input {
+  border: 1px solid var(--lightgray);
+  padding: 0.5rem;
+}
+
+.patientTable {
+  display: relative;
+  border-radius: 15px; 
+  width: 100%;
+}
