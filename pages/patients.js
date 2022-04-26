@@ -1,4 +1,5 @@
 import PatientTable from '../components/patientTable'
+import Table from '../components/table'
 import Header from '../components/header'
 import Sidebar from '../components/sidebar'
 import styles from '../styles/Patients.module.css'
@@ -12,7 +13,7 @@ export default function Patients() {
     <div className={styles.leftContainer}>
       <Header/>
       <div className={styles.table}>
-        <PatientTable/>
+        <Table/>
       </div>
     </div>
   </div>
