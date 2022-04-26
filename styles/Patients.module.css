@@ -57,3 +57,30 @@
   border-radius: 15px; 
   width: 100%;
 }
+
+.filter {
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--gray);
+  width: 25rem;
+  outline-color: var(--gray);
+}
+
+.filter:hover {
+  border-color: var(--lightgray);
+  transition: all 200ms ease;
+  outline-color: var(--gray);
+}
+
+.filter:focus {
+  outline-color: var(--gray);
+}
+
+
+.searchContainer {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin: 1rem 0;
+  align-items: center;
+  gap: 20px;
+}
