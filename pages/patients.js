@@ -1,4 +1,3 @@
-import PatientTable from '../components/patientTable'
 import Table from '../components/table'
 import Header from '../components/header'
 import Sidebar from '../components/sidebar'
