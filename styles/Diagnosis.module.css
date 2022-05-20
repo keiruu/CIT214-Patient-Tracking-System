@@ -1,0 +1,229 @@
+.diagnosisContainer { 
+    padding: 0;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    color: #1D2854; 
+    
+}
+
+
+.headerD {
+    height: 120px;
+    width: 100%;
+    float: left;
+}
+
+.headerD h1{
+    font-size: 50px; 
+    text-align: left; 
+    margin-left: 120px; 
+    padding-top: 48px;
+}  
+
+
+.patientsInfoContainer {
+    width: 98%; 
+    height: 100px;
+    flex-direction: row;
+    justify-content: center;
+    
+    display: flex; 
+    padding-top: 20px; 
+    
+} 
+
+.field {
+
+    padding-top: 22px; 
+     
+}  
+
+.field input {
+    width: 270px;
+    height: 45px;
+    border-radius: 10px; 
+    margin: 10px; 
+    border: 3px solid lightgrey;
+    padding-left: 10px; 
+    font-family: 'Lato', sans-serif;
+    line-height: 15px;
+    font-size: 20px;
+    border-spacing: 50px;
+    outline: none; 
+} 
+
+.field input:focus {
+    border-color: darkgray;
+}
+
+
+.field input:hover {
+    border-color: darkgray;
+}
+
+.field input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.field input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+
+.field input::placeholder {
+    color: lightgray;
+    font-size: 20px;
+    font-family: 'Lato', sans-serif;
+}
+
+
+
+.checkBox {
+    padding: 37px 10px 30px 0px; 
+    display:inline-flex;
+    width: 250px;
+} 
+
+.checkBox input {
+    margin-top: 6px;
+    width: 50px;
+    height: 20px; 
+    background-color: mediumblue;
+}   
+
+
+.checkBox label {
+    width: 220px;
+    margin-right: 35px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;  
+    font-weight: bold;
+} 
+
+.datetime {
+   
+    width: 30%;
+    height: 150px;
+    float: right;
+    margin-top: 25px; 
+    margin-right: 55px;
+    
+}
+
+.datetime input {
+    height: 50px; 
+    width: 320px;
+    font-size: 20px;
+    border: solid 2px lightgrey;
+    border-radius: 10px;
+    font-family: 'Lato', sans-serif; 
+    color: lightgrey; 
+    padding: 7px;
+    outline: none;
+
+} 
+
+.datetime input:hover{
+    border-color: darkgray;
+}
+
+
+
+.inputDiagnosis {
+    width: 50%; 
+    height: 300px;
+    margin: 20px 20px 40px 20px; 
+    padding-left: 100px; 
+    float: left; 
+    
+} 
+
+.inputDiagnosis textarea{
+    width: 750px;
+    height: 290px; 
+    border: 3px solid lightgray; 
+    border-radius: 10px; 
+    padding-top: 17px;
+    padding-left: 8px;
+    font-family: 'Lato', sans-serif;
+    resize: none;
+    line-height: 15px;
+    font-size: 20px; 
+    outline: none;
+}  
+
+.inputDiagnosis textarea::placeholder {
+    font-family: 'Lato', sans-serif;
+    font-size: 20px; 
+    color: lightgray;  
+   
+} 
+
+.inputDiagnosis textarea:hover {
+    border-color: darkgray;
+} 
+
+.inputDiagnosis textarea:focus{
+    border-color: darkgray;
+}
+
+
+
+.button {
+    width: 100%;
+    flex-direction: row;
+    display: flex; 
+    padding-left: 620px;
+}  
+
+.cancelButton input {
+    width: 80px;
+    height: 30px;
+    border-style: hidden;
+    margin-right: 50px; 
+    background-color: white; 
+    font-size: 15px;
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    padding: 5px;
+    font-weight: bold;
+    border-radius: 20px;
+} 
+
+.saveButton input {
+    width: 80px;
+    height: 30px;
+    border-radius: 20px;
+    background-color: #0000FF; 
+    border-color: #0000FF;
+    border-style: hidden;
+    color: white;
+    font-size: 15px; 
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    padding: 5px; 
+    font-weight: bold;
+}
+.saveButton input:hover {
+    background-color: mediumblue;
+}
+.cancelButton input:hover {
+    background-color: lightgray;
+    
+}
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
