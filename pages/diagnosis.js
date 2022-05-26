@@ -12,21 +12,22 @@ function diagnosis() {
       <form> 
         <div className= {styles.patientsInfoContainer}> 
           <div className= {styles.field}> 
-          <input type= "tel" name= "phone" placeholder= "Patient No."/>  
+            <input type= "tel" name= "phone" placeholder= "Patient No."/>  
           </div>
 
           <div className= {styles.field}> 
-          <input type= "number" name= "weight" placeholder= "Weight"/>  
+            <input type= "number" name= "weight" placeholder= "Weight"/>  
           </div> 
 
           <div className= {styles.field}> 
-          <input type= "number" name= "height" placeholder= "Height"/>  
-           </div>
+            <input type= "number" name= "height" placeholder= "Height"/>  
+          </div>
        
           <div className= {styles.checkBox}> 
-          <input type= "checkbox"/> 
-          <label> For follow up check up </label>
+            <input type= "checkbox"/> 
+            <label> For follow up check up </label>
           </div>
+          
         </div>
 
         
