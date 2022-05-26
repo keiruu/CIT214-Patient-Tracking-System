@@ -84,3 +84,20 @@
   align-items: center;
   gap: 20px;
 }
+
+.btnAddPatient {
+  background-color: var(--purple);
+  border-radius: 100%;
+  padding: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 300ms ease;
+}
+
+.btnAddPatient:hover {
+  background-color: #585de0;
+}
+
+.addPatient {
+   color: white;
+}

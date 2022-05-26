@@ -1,8 +1,9 @@
 import React from 'react'
 import styles from '../styles/Patients.module.css'
+import Link from 'next/link'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { useTable, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import { usePagination } from 'react-table/dist/react-table.development'
 // A great library for fuzzy filtering/sorting items
@@ -17,12 +18,16 @@ function GlobalFilter({
 }) {
   const count = preGlobalFilteredRows.length
   const [value, setValue] = React.useState(globalFilter)
-  const onChange = useAsyncDebounce(value => {
-    setGlobalFilter(value || undefined)
-  }, 200)
+  try {
+    const onChange = useAsyncDebounce(value => {
+      setGlobalFilter(value || undefined)
+    }, 200)
+  } catch (error) {
+    console.log("Error: " + error);
+  }
 
   return (
-    <span className={styles.searchContainer}>
+    <span className={styles.searchContainer}> 
       <input
         value={value || ""}
         onChange={e => {
@@ -35,6 +40,11 @@ function GlobalFilter({
       />
       <div>
         Date:
+      </div>
+      <div className={styles.btnAddPatient}>
+        <Link href="/identification" passHref>
+          <FontAwesomeIcon icon={faUserPlus} size="lg" className={styles.addPatient} />
+        </Link>
       </div>
     </span>
   )
@@ -332,7 +342,7 @@ function App() {
            </div>
            )
          },
-       ) // It works, and you know what to do if something works.. DON'T TOUCH IT. 
+       ) // It works, and you know what to do if something works.. DON'T TOUCH IT. Will figure out how to fix it but it works anyways
      )
     , []
  )
