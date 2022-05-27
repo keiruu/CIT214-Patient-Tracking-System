@@ -6,9 +6,9 @@
     font-size: 40x;
     width: 100%;
     height: 46;
-    margin-left: 30px;
+    margin-left: 5rem;
     padding: 0.4rem 0.8rem;
-
+    padding-top: 48px;
 }
 
 .form{
@@ -20,20 +20,15 @@
   
 }
 
-
 .flexcontainer {
     display: flex;
     column-gap: 5px;
-    margin-left: 50px;
-    margin-right: 50px;
-    
-    
+    margin: 0 5rem;
   }
 
   .flexcontainer> div {
-    margin: 20px;
+    margin: 15px 10px;
     font-size: 10px;
-
 }
 
 
@@ -41,8 +36,8 @@
     height: 50px;
     width: 100%;
     background: #FFFFFF;
-    border: 2px solid #C1C7D0;
-    border-radius: 15px;
+    border: 2px solid lightgrey;
+    border-radius: 10px;
     font-size: 18px;
     font-family: 'Lato';
     font-style: normal;
@@ -55,7 +50,7 @@
   .flexcontainer textarea{
     background: #FFFFFF;
     border: 2px solid #C1C7D0;
-    border-radius: 15px;
+    border-radius: 10px;
     font-size: 18px;
     box-sizing: border-box;
     font-family: 'Lato';
@@ -65,7 +60,7 @@
     width: 500px;
     height: 150px;
     padding: 12px 20px;
-
+    resize: none;
 
   }
 
@@ -92,8 +87,7 @@
   }
 
   .add{
-    width: 60%;
-
+    width: 65%;
   }
   .Cno{
     width: 25%;
@@ -115,33 +109,25 @@
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
-    position: absolute ;
     border-radius: 10px;
     width: 283px;
     height: 59px;
-    left: 700px;
-    top: 480px;
-
-}
-
+  }
+  
 .Button2{
-    cursor: pointer;
-    transition-duration: 0.4s;
-    border: none;
-    font-size: 18px;
-    border-radius: 10px;
-    font-family: 'Lato';
-    font-style: normal;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  border: none;
+  font-size: 18px;
+  border-radius: 10px;
+  font-family: 'Lato';
+  font-style: normal;
     font-weight: 400;
     line-height: 24px;
-    position: absolute;
     width: 283px;
     height: 59px;
-    left: 1024px;
-    top: 480px;
-
-
- 
+    background-color: #6C71F8;
+    color: white;
 }
 
 .Button1:hover {
@@ -150,8 +136,25 @@
   }
 
   .Button2:hover {
-    background-color: #6C71F8;
+    background-color: #5459e6;
     color: white;
   }
 
+.flexcontainer input::placeholder, .flexcontainer textarea::placeholder {
+    font-family: 'Lato', sans-serif;
+    font-size: 20px; 
+    color: lightgray;  
+} 
 
+.DOB input{
+  color: lightgrey; 
+  font-size: 20px;
+}
+
+.buttons {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  gap: 25px;
+  align-items: flex-end;
+}

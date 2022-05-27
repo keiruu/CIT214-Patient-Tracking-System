@@ -1,15 +1,17 @@
 import React, { Component } from 'react' 
 import styles from '../styles/Diagnosis.module.css'
+import { useRouter } from 'next/router'
 
-function diagnosis() {
+function Diagnosis() {
+  const router = useRouter()
+
   return (
-    <div className= {styles.diagnosisContainer}> 
+    <div className={styles.diagnosisContainer}> 
 
-      <div className= {styles.headerD}> 
-        <h1> Diagnosis Form </h1>
-      </div>
-    
       <form> 
+        <div className={styles.headerD}> 
+          <h1> Diagnosis Form </h1>
+        </div>
         <div className= {styles.patientsInfoContainer}> 
           <div className= {styles.field}> 
             <input type= "tel" name= "phone" placeholder= "Patient No."/>  
@@ -31,23 +33,25 @@ function diagnosis() {
         </div>
 
         
-        <div className= {styles.inputDiagnosis}>  
-          <textarea type="text" placeholder= "Diagnosis"/>
-        </div> 
-        
-        
-        <div className= {styles.datetime}>
-          <input type= "datetime-local"/> 
+        <div className={styles.row2}>
+          <div className= {styles.inputDiagnosis}>  
+            <textarea type="text" placeholder= "Diagnosis"/>
+          </div> 
+          
+          
+          <div className= {styles.datetime}>
+            <input type= "datetime-local"/> 
+          </div>
         </div>
         
 
         <div className= {styles.button}>  
           <div className= {styles.cancelButton}> 
-          <input type= "submit" value= "CANCEL"/>
+            <button onClick={() => router.back}>CANCEL</button>
           </div> 
 
           <div className= {styles.saveButton}> 
-          <input type= "submit" value= "SAVE"/>
+            <input type= "submit" value= "SAVE"/>
           </div> 
         </div>
 
@@ -56,4 +60,4 @@ function diagnosis() {
   )
 }
 
-export default diagnosis;
+export default Diagnosis;

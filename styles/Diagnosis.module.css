@@ -3,48 +3,43 @@
     margin: 0;
     font-family: 'Lato', sans-serif;
     color: #1D2854; 
-    
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 
 .headerD {
-    height: 120px;
+    height: 100px;
     width: 100%;
-    float: left;
 }
 
 .headerD h1{
-    font-size: 50px; 
+    font-size: 40px; 
     text-align: left; 
-    margin-left: 120px; 
     padding-top: 48px;
 }  
 
 
 .patientsInfoContainer {
-    width: 98%; 
     height: 100px;
     flex-direction: row;
-    justify-content: center;
-    
     display: flex; 
     padding-top: 20px; 
-    
+    gap: 15px;
 } 
 
 .field {
-
     padding-top: 22px; 
-     
 }  
 
 .field input {
     width: 270px;
     height: 45px;
     border-radius: 10px; 
-    margin: 10px; 
-    border: 3px solid lightgrey;
-    padding-left: 10px; 
+    border: 2px solid lightgrey;
+    padding-left: 15px; 
     font-family: 'Lato', sans-serif;
     line-height: 15px;
     font-size: 20px;
@@ -77,7 +72,6 @@
 }
 
 
-
 .checkBox {
     padding: 37px 10px 30px 0px; 
     display:inline-flex;
@@ -102,14 +96,15 @@
     font-weight: bold;
 } 
 
+.row2 { 
+    display: flex;
+    gap: 25px;
+    padding-top: 1.4rem;
+}
+
 .datetime {
-   
-    width: 30%;
     height: 150px;
-    float: right;
-    margin-top: 25px; 
-    margin-right: 55px;
-    
+    margin-left: 130px;
 }
 
 .datetime input {
@@ -120,33 +115,25 @@
     border-radius: 10px;
     font-family: 'Lato', sans-serif; 
     color: lightgrey; 
-    padding: 7px;
+    padding: 7px 15px;
     outline: none;
-
 } 
 
 .datetime input:hover{
     border-color: darkgray;
 }
 
-
-
 .inputDiagnosis {
     width: 50%; 
-    height: 300px;
-    margin: 20px 20px 40px 20px; 
-    padding-left: 100px; 
-    float: left; 
-    
 } 
 
 .inputDiagnosis textarea{
     width: 750px;
     height: 290px; 
-    border: 3px solid lightgray; 
+    border: 2px solid lightgray; 
     border-radius: 10px; 
     padding-top: 17px;
-    padding-left: 8px;
+    padding-left: 15px;
     font-family: 'Lato', sans-serif;
     resize: none;
     line-height: 15px;
@@ -175,13 +162,12 @@
     width: 100%;
     flex-direction: row;
     display: flex; 
-    padding-left: 620px;
+    justify-content: center;
+    padding-top: 2rem;
 }  
 
-.cancelButton input {
-    width: 80px;
-    height: 30px;
-    border-style: hidden;
+.cancelButton button {
+    border: none;
     margin-right: 50px; 
     background-color: white; 
     font-size: 15px;
@@ -189,15 +175,14 @@
     font-family: 'Lato', sans-serif;
     padding: 5px;
     font-weight: bold;
-    border-radius: 20px;
+    border-radius: 10px;
+    width: 150px;
+    height: 59px;
 } 
 
 .saveButton input {
-    width: 80px;
-    height: 30px;
-    border-radius: 20px;
-    background-color: #0000FF; 
-    border-color: #0000FF;
+    background-color: #6C71F8; 
+    border-color: #6C71F8;
     border-style: hidden;
     color: white;
     font-size: 15px; 
@@ -205,9 +190,12 @@
     font-family: 'Lato', sans-serif;
     padding: 5px; 
     font-weight: bold;
+    border-radius: 10px;
+    width: 150px;
+    height: 59px;
 }
 .saveButton input:hover {
-    background-color: mediumblue;
+    background-color: #595eea;
 }
 .cancelButton input:hover {
     background-color: lightgray;

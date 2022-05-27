@@ -52,8 +52,10 @@ function Identification() {
                      <div className={styles.textarea}>
                         <textarea type="text" name='allergies' id='allergies' placeholder='Allergies'></textarea>
                      </div>
-                     <button type="reset" className={styles.Button1}>Cancel</button>
-                     <button type="submit" className={styles.Button2}>Next</button>
+                     <div className={styles.buttons}>
+                        <button type="reset" className={styles.Button1}>Cancel</button>
+                        <button type="submit" className={styles.Button2}>Next</button>
+                     </div>
                </div>
            </div>
         </form>
