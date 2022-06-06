@@ -1,11 +1,12 @@
 import '../styles/globals.css'
 import '../styles/design_tokens.css'
-import { AuthProvider } from '../src/context'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { AuthContextProvider } from '../src/authContext'
 
 function MyApp({ Component, pageProps }) {
-  return <AuthProvider>
+  return <AuthContextProvider>
     <Component {...pageProps} />
-  </AuthProvider>
+  </AuthContextProvider>
 }
 
 export default MyApp

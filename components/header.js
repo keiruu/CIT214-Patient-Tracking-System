@@ -8,9 +8,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // the website displays it as fa-magnifying-glass, remove the - and capitalize every first letter nalang
 import { faMagnifyingGlass, faBell, faUserDoctor, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 
-// Change this according to how you would fetch the doctor's name from DB
+import { useAuth } from '../src/authContext'
+
 
 function Header() {
+  const { currentUser } = useAuth()
+  // Change this according to how you would fetch the doctor's name from DB
   const doctor = {firstName: "Han", lastName: "Jisung"};
   const size = "lg"
   

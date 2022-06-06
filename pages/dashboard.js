@@ -3,8 +3,10 @@ import Header from '../components/header'
 import Sidebar from '../components/sidebar'
 import styles from '../styles/Dashboard.module.css'
 import PatientList from '../components/patientlist'
+import { useAuth } from "../src/authContext"
 
 function Dashboard () {
+  const { currentUser } = useAuth()
 
   return (
     <div className={styles.dashboardContainer}>
