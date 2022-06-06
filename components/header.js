@@ -7,9 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // https://fontawesome.com/icons
 // the website displays it as fa-magnifying-glass, remove the - and capitalize every first letter nalang
 import { faMagnifyingGlass, faBell, faUserDoctor, faAngleDown } from '@fortawesome/free-solid-svg-icons'
-
 import { useAuth } from '../src/authContext'
-
+import Menu from '../components/menu'
 
 function Header() {
   const { currentUser } = useAuth()
@@ -19,7 +18,6 @@ function Header() {
   
   return (
     <div className={styles.container}>
-
         <div className={styles.linedContainer}>
           <div className={styles.greeting}>
             <h2>Good day, Dr. {doctor.firstName} {doctor.lastName}</h2>
@@ -33,9 +31,10 @@ function Header() {
             </div>
             
             <div className={styles.profile}>
-              <FontAwesomeIcon icon={faUserDoctor} />
+              {/* <FontAwesomeIcon icon={faUserDoctor} />
               <p>Dr. {doctor.firstName}</p>
-              <FontAwesomeIcon icon={faAngleDown} className={styles.profileIcon} />
+              <FontAwesomeIcon icon={faAngleDown} className={styles.profileIcon} /> */}
+              <Menu/>
             </div>
           </div>
         </div>
