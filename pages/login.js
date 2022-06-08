@@ -19,16 +19,16 @@ export default function Home() {
     e.preventDefault()
 
     try {
-      setLoading(true)
+      //setLoading(true)
       await login(emailRef.current.value, passRef.current.value)
-      setLoading(false)
+      //setLoading(false)
 
     } catch (error) {
       console.log(error)
     }
 
-    // setLoading(true)
-    // return router.push('/dashboard')
+    //setLoading(true)
+    return router.push('/dashboard')
   }
 
   const handleUID = (uid) => {
