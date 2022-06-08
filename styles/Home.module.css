@@ -188,3 +188,49 @@
   align-items: center;
   height: 100vh;
 }
+
+.signupContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  height: 100vh;
+}
+
+.addDoctor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.addDoctor h1 {
+  margin-bottom: 3rem;
+}
+
+.signupForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.signupForm input {
+  padding: 1rem;
+  border-radius: 15px;
+  border: 2px solid #C1C7D0;
+  width: 25vw;
+}
+
+.btnSignup {
+  padding: 1rem;
+  border-radius: 15px;
+  border: none;
+  color: white;
+  background-color: #6C71F8;
+  transition: all 300ms ease;
+  cursor: pointer;
+  margin: 3rem 0;
+}
+
+.btnSignup:hover {
+  background-color: #5c61e8;
+}

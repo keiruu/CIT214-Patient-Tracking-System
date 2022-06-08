@@ -41,10 +41,18 @@ function GlobalFilter({
       <div>
         Date:
       </div>
+      
+      {/* Diri ka nath tandog */}
       <div className={styles.btnAddPatient}>
-        <Link href="/identification" passHref>
+        {/* <Link href="/identification" passHref>
+        </Link> */}
+        <button onClick={() => {
+            // Diri ka code nath, kung pano e open ang modal
+
+
+        }}>
           <FontAwesomeIcon icon={faUserPlus} size="lg" className={styles.addPatient} />
-        </Link>
+        </button>
       </div>
     </span>
   )
