@@ -4,27 +4,43 @@ import hero from '../assets/heroPNG.png'
 import { useRef, useState, useEffect } from "react"
 import { useAuth } from "../src/authContext"
 import { useRouter } from 'next/router'
-import BounceLoader from "react-spinners/BounceLoader";
 
+import BounceLoader from "react-spinners/BounceLoader";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+  
 export default function Home() {
   const data = "im passing something"
   const emailRef = useRef()
   const passRef = useRef()
-  const { login, currentUser, userUID} = useAuth()
+  const { login, currentUser, userUID, resetPassword} = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [toastMessage, setToast] = useState("")
   const router = useRouter()
+
+  const notify = () =>{
+    toast.success(toastMessage, {
+      position: toast.POSITION.BOTTOM_LEFT
+    });
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault()
 
     try {
       setLoading(true)
-      await login(emailRef.current.value, passRef.current.value)
-      setLoading(false)
-
+      const log = await login(emailRef.current.value, passRef.current.value)
+      if (log === "error") {
+        setLoading(false)
+        toast.error("Error logging in, password may be incorrect", {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      }
     } catch (error) {
-      console.log(error)
+      toast.error("Error logging in, password may be incorrect", {
+        position: toast.POSITION.BOTTOM_LEFT
+      });
     }
 
     // setLoading(true)
@@ -36,7 +52,6 @@ export default function Home() {
       if(uid == "3l4tNaUj23Wzz8SW34vxoDwjtv83") {
         router.push('/signup')
       } else {
-        console.log("ari ta di")
         router.push('/dashboard')
       }
     } catch (error) {
@@ -72,11 +87,35 @@ export default function Home() {
             <form className={styles.loginForm} onSubmit={handleLogin}>
               <input ref={emailRef} type="email" name='email' id='email' placeholder='Email' required></input>
               <input ref={passRef} type="password" name='password' id='password' placeholder='Password' required></input>
-              <p className={styles.forgot}>Forgot your password? <span className={styles.underlined}>Click here</span></p>
+              <p className={styles.forgot}>Forgot your password? 
+                <span className={styles.underlined} 
+                  onClick={async () => {
+                    try {
+                      if(emailRef.current.value === null || emailRef.current.value === ""){
+                        toast.error("Enter your email", {
+                          position: toast.POSITION.BOTTOM_RIGHT
+                        });
+                      } else {
+                        await resetPassword(emailRef.current.value)
+                        toast.success("Reset Password Email Sent!", {
+                          position: toast.POSITION.BOTTOM_RIGHT
+                        });
+                      }
+                    } catch (error) {
+                      toast.error("Error sending reset email, try again later.", {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                      });
+                    }
+                  }
+                  }>
+                   Click here
+                </span>
+              </p>
               <button className={styles.btnLogin} type="submit">LOGIN</button>
             </form>
-            {/* <div className={styles.or}>
-              <hr/> <span>OR</span> <hr/>
+            <ToastContainer />
+            {/* <div className={styles.error}>
+              Error
             </div> */}
             {/* <p>If you don&apos;t have an account. <Link>Sign up, now!</Link></p> */}
           </div>

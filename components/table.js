@@ -39,14 +39,14 @@ function GlobalFilter({
         className={styles.filter}
       />
       <div>
-        Date:
+        {/* Date: */}
       </div>
       
       {/* Diri ka nath tandog */}
-      <div className={styles.btnAddPatient}>
+      <div>
         {/* <Link href="/identification" passHref>
         </Link> */}
-        <button onClick={() => {
+        <button className={styles.btnAddPatient} onClick={() => {
             // Diri ka code nath, kung pano e open ang modal
 
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import styles from '../styles/Header.module.css'
 
 // Stuff you need for importing icons
@@ -11,10 +11,20 @@ import { useAuth } from '../src/authContext'
 import Menu from '../components/menu'
 
 function Header() {
-  const { currentUser } = useAuth()
+  const { currentUser, userName } = useAuth()
+  const [doctor, setDoctor] = useState({firstName: "", lastName: ""})
   // Change this according to how you would fetch the doctor's name from DB
-  const doctor = {firstName: "Han", lastName: "Jisung"};
   const size = "lg"
+  
+  useEffect(() => {
+    let doctor
+    const name = userName.split(" ")
+    if(name.length >= 3) {
+      setDoctor({firstName: name[0] + name[1], lastName: name[name.length - 1]})
+    } else {
+      setDoctor({firstName: name[0], lastName: name[1]})
+    }
+  }, [userName])
   
   return (
     <div className={styles.container}>
