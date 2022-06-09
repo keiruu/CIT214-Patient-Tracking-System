@@ -13,7 +13,6 @@ function MyDropdown() {
   const router = useRouter()
 
   useEffect(() => {
-    console.log(userName)
     const doc = userName.split(" ")
     setDoctor(doc[0])
   }, [userName])
