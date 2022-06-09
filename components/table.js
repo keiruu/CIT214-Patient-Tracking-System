@@ -1,13 +1,16 @@
-import React from 'react'
+
 import styles from '../styles/Patients.module.css'
 import Link from 'next/link'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { useTable, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import { usePagination } from 'react-table/dist/react-table.development'
 // A great library for fuzzy filtering/sorting items
 import matchSorter from 'match-sorter'
+import React, { useState } from 'react';
+import { db } from '../src/firebase';
+import { useEffect } from 'react';
+import { getDocs, collection } from 'firebase/firestore';
 
 
 // Define a default UI for filtering
@@ -85,7 +88,9 @@ fuzzyTextFilterFn.autoRemove = val => !val
 
 // Our table component
 function Table({ columns, data }) {
+  
   const filterTypes = React.useMemo(
+    
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
       fuzzyText: fuzzyTextFilterFn,
@@ -135,6 +140,7 @@ function Table({ columns, data }) {
     state: { pageIndex, pageSize },
   } = useTable(
     {
+      
       columns,
       data,
       defaultColumn, // Be sure to pass the defaultColumn option
@@ -159,7 +165,9 @@ function Table({ columns, data }) {
               />
       <table {...getTableProps()} className={styles.patientTable}>
         <thead>
+          
           {headerGroups.map(headerGroup => (
+            
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th {...column.getHeaderProps()}
@@ -188,19 +196,26 @@ function Table({ columns, data }) {
             </th>
           </tr> */}
         </thead>
+        
         <tbody {...getTableBodyProps()}>
+          
+          
           {firstPageRows.map((row, i) => {
             prepareRow(row)
+            
             return (
               <tr {...row.getRowProps()}>
+                
                 {row.cells.map(cell => {
+                 
                   return <td {...cell.getCellProps()}
                     style={{
                       padding: '25px 10px',
                       background: 'white',
                       borderBottom: '1px solid #F2F6FE'
                     }}
-                  >{cell.render('Cell')}</td>
+                  >{cell.render('Cell')}
+                  </td>
                 })}
               </tr>
             )
@@ -271,7 +286,31 @@ function filterGreaterThan(rows, id, filterValue) {
 // check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
-function App() {
+function Patients() {
+
+  const [patientinfo, setPatientinfo] = useState([]);
+    
+  useEffect(() => {
+  getpatientInfo()
+  },  [])
+
+  useEffect(() => {
+    console.log(patientinfo)
+  }, [patientinfo])
+
+  function getpatientInfo(){
+    const patinfoCollectionRef = collection(db, 'patientInfo')
+    getDocs(patinfoCollectionRef)
+    .then(response => {
+    const PatientInfo = response.docs.map(doc => ({
+    data: doc.data(),
+    id: doc.id,
+  }))
+   setPatientinfo(PatientInfo)
+      
+    })
+    .catch(error => console.log(error.message))
+  }
 
   // Column names
   const columns = React.useMemo(
@@ -308,47 +347,30 @@ function App() {
   const size = 'lg'
 
   // Change according to how you would get patient data
-  const patientData = [
-    {
-      name: 'Zenrick Parcon',
-      contactNumber: '09498653498',
-      date: '04/25/2022',
-      visitationTime: '9:15-9:45 AM',
-      diagnosis: 'Fever & Cough'
-    },
-    {
-      name: 'Thrys Formoso',
-      contactNumber: '09124698753',
-      date: '04/25/2022',
-      visitationTime: '9:45-10:30 AM',
-      diagnosis: 'Fever'
-    },
-    {
-      name: 'Abigail Kaye Unating',
-      contactNumber: '09234956875',
-      date: '04/25/2022',
-      visitationTime: '10:30-11:05 AM',
-      diagnosis: 'Diarrhea'
-    },
-  ]
-
+  
+  
   // Value of columns
+  
+  
   const data = React.useMemo(
     () => 
-      patientData.map(patient => 
+    
+                    
+      patientinfo.map(patient => 
        (
          {
-           col1: patient.name,
-           col2: patient.contactNumber,
-           col3: patient.date,
-           col4: patient.visitationTime,
-           col5: patient.diagnosis,
+           col1: patient.data.Fname,
+           col2: patient.data.Cont,
+           col3: patient.data.date,
+           col4: patient.data.visitationTime,
+           col5: (patient,'diagnosis'.diagnosis.data),
            col6: (
            <div className={styles.actions}>
              <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
              <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
              
            </div>
+           
            )
          },
         ) // It works, and you know what to do if something works.. DON'T TOUCH IT. Will figure out how to fix it but it works anyways
@@ -356,11 +378,12 @@ function App() {
     , []
  )
 
-  return (
+  return ( 
+  <Table columns={columns} data={data} />
 
-      <Table columns={columns} data={data} />
 
+   
   )
 }
 
-export default App
+export default Patients
