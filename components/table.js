@@ -347,10 +347,11 @@ function App() {
            <div className={styles.actions}>
              <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
              <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+             
            </div>
            )
          },
-       ) // It works, and you know what to do if something works.. DON'T TOUCH IT. Will figure out how to fix it but it works anyways
+        ) // It works, and you know what to do if something works.. DON'T TOUCH IT. Will figure out how to fix it but it works anyways
      )
     , []
  )

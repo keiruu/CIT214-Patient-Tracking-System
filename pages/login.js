@@ -29,6 +29,10 @@ export default function Home() {
     e.preventDefault()
 
     try {
+      //setLoading(true)
+      await login(emailRef.current.value, passRef.current.value)
+      //setLoading(false)
+
       setLoading(true)
       const log = await login(emailRef.current.value, passRef.current.value)
       if (log === "error") {
@@ -43,8 +47,8 @@ export default function Home() {
       });
     }
 
-    // setLoading(true)
-    // return router.push('/dashboard')
+    //setLoading(true)
+    return router.push('/dashboard')
   }
 
   const handleUID = (uid) => {

@@ -12,8 +12,8 @@ function Dashboard () {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  // useEffect(() => {
-  //   setLoading(false)
+   // useEffect(() => {
+  //   setLoading(true)
   //   console.log("hey")
   //   if(!currentUser) {
   //     // setLoading(true)
