@@ -1,13 +1,21 @@
 .sidebarContainer {
   display: flex;
   flex-direction: column;
-  padding: 3rem 4rem;
+  padding: 3rem 3rem;
   justify-content: space-between;
   height: 100vh;
   border: 2px solid var(--lightgray);
 }
 
 .mainIcons {
+  display: flex;
+  flex-direction: column;
+  gap: 8vh;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menuOptions {
   display: flex;
   flex-direction: column;
   gap: 8vh;
@@ -29,7 +37,25 @@
   color: var(--gray);
 }
 
+.active, .inactive {
+  display: flex;
+  gap: 1rem;
+}
+
 .inactive:hover {
   color: var(--purple);
   transition: all 200ms ease-in-out;
+}
+
+.sidebarButton {
+  display: flex;
+  gap: 1rem;
+}
+
+.userManual {
+  color: var(--gray);
+  width: 100%;
+  gap: 1rem;
+  display: flex;
+  cursor: pointer;
 }

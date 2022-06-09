@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../styles/Sidebar.module.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse, faChartColumn, faCalendar, faMessage, faGear } from '@fortawesome/free-solid-svg-icons'
+import { faHouse, faChartColumn, faCalendar, faUsers, faNotesMedical, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -30,36 +30,52 @@ function Sidebar() {
             </Link>
           </div>
 
-          <span>
-            <Link href='/dashboard' passHref>
-              <FontAwesomeIcon icon={faHouse} className={router.pathname == "/dashboard" ? styles.active : styles.inactive} size={size} />
-            </Link>
-          </span>
+          <div className={styles.menuOptions}>
+            <span>
+              <Link href='/dashboard' passHref>
+                <div className={router.pathname == "/dashboard" ? styles.active : styles.inactive}>
+                  <FontAwesomeIcon icon={faHouse} size={size} />
+                  <span>Dashboard</span>
+                </div>
+              </Link>
+            </span>
 
-          <span>
-            <Link href='/patients' passHref>
-              <FontAwesomeIcon icon={faChartColumn} className={router.pathname == "/patients" ? styles.active : styles.inactive} size={size} />
-            </Link>
-          </span>
+            <span>
+              <Link href='/patients' passHref>
+                <div className={router.pathname == "/patients" ? styles.active : styles.inactive}>
+                <FontAwesomeIcon icon={faUsers} size={size} />
+                <span>Patients</span>
+                </div>
+              </Link>
+            </span>
 
-          <span>
-            <Link href='/schedule' passHref>
-              <FontAwesomeIcon icon={faCalendar} className={router.pathname == "/schedule" ? styles.active : styles.inactive} size={size} />
-            </Link>
-          </span>
 
-          <span>
-            <Link href='/messages' passHref>
-              <FontAwesomeIcon icon={faMessage} className={router.pathname == "/messages" ? styles.active : styles.inactive} size={size} />
-            </Link>
-          </span>
+            <span>
+              <Link href='/followup' passHref>
+                <div className={router.pathname == "/followup" ? styles.active : styles.inactive}>
+                  <FontAwesomeIcon icon={faNotesMedical} size={size} />
+                  <span>Follow-up Checkup</span>
+                </div>
+              </Link>
+            </span>
+
+            <span>
+              <Link href='/schedule' passHref>
+                <div className={router.pathname == "/schedule" ? styles.active : styles.inactive}>
+                  <FontAwesomeIcon icon={faCalendar} size={size} />
+                  <span>Schedule</span>
+                </div>
+              </Link>
+            </span>
+          </div>
 
         </div>
-        <span>
-          <Link href='/settings' passHref>
-            <FontAwesomeIcon icon={faGear} className={styles.active} size={size}/>
-          </Link>
-        </span>
+        {/* insert pdf */}
+        <div className={styles.userManual}>
+          <FontAwesomeIcon icon={faCircleInfo} size={size}/>
+          <span>User Manual</span>
+        </div>
+        
       </div>
     </div>
   )
