@@ -2,7 +2,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { db } from '../src/firebase';
 import styles from '../styles/Identification.module.css';
-
+import { useRouter } from 'next/router'
 
 function Identification() {
    const [PN, setNum] = useState('');
@@ -16,6 +16,7 @@ function Identification() {
    const [Gn, setGn] = useState('');
    const [GnCont, setGnCont] = useState('');
    const [Allergy, setAllergy] = useState('');
+   const router = useRouter()
 
    function handleSubmit(e){
       e.preventDefault()
@@ -26,6 +27,7 @@ function Identification() {
       addDoc(patInf, { PN, Fname, Mname, Lname, Sex, DoB, Add, Cont, Gn, GnCont, Allergy })
       .then(response => {
          console.log(response)
+         router.push('/diagnosis')
       }) 
       .catch(error => {
          console.log(error.message)
@@ -83,8 +85,8 @@ function Identification() {
                         <textarea type="text" name='allergies' id='allergies' value={Allergy} placeholder='Allergies' onChange={e => setAllergy(e.target.value) }></textarea>
                      </div> 
                      <div className={styles.buttons}>
-                        <button type="submit" className={styles.Button2}>Next</button>
                         <button type="reset" className={styles.Button1}>Cancel</button>
+                        <button type="submit" className={styles.Button2}>Next</button>
                      </div>
                </div>
            </div>
