@@ -153,7 +153,7 @@
   background-color: #6C71F8;
   transition: all 300ms ease;
   cursor: pointer;
-  margin: 3rem 0;
+  margin-top: 1.5rem;
 }
 
 .btnLogin:hover {
@@ -162,6 +162,7 @@
 
 .underlined {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .or {
@@ -194,7 +195,8 @@
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  height: 100vh;
+  height: 80vh;
+  flex-direction: column;
 }
 
 .addDoctor {
@@ -233,4 +235,38 @@
 
 .btnSignup:hover {
   background-color: #5c61e8;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-top: 2rem;
+}
+
+.header button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  border: 2px solid var(--purple);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  color: var(--purple);
+  margin-right: 2rem;
+  transition: all 300ms ease;
+}
+
+.header button:hover {
+  background-color: var(--purple);
+  color: white;
+}
+
+.error {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--lightgray);
+  padding: 0.8rem;
+  margin: 1rem 0;
 }

@@ -2,14 +2,21 @@ import { Menu, Transition} from '@headlessui/react'
 import { useAuth } from '../src/authContext'
 import { useRouter } from 'next/router'
 import styles from '../styles/Menu.module.css'
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
 
 function MyDropdown() {
 
-  const { logout } = useAuth()
+  const { logout, userName } = useAuth()
+  const [doctor, setDoctor] = useState()
   const router = useRouter()
+
+  useEffect(() => {
+    console.log(userName)
+    const doc = userName.split(" ")
+    setDoctor(doc[0])
+  }, [userName])
 
   return (
     <div className={styles.container}>
@@ -17,8 +24,8 @@ function MyDropdown() {
         <div>
           <div>
             <Menu.Button className={styles.menuButton}>
-              More
-              <FontAwesomeIcon icon={faAngleDown} className={styles.profileIcon} />
+              Dr. {doctor}
+              <FontAwesomeIcon icon={faAngleDown} className={styles.arrow} />
             </Menu.Button>
           </div>
           <Transition
