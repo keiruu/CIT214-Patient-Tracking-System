@@ -47,7 +47,7 @@ function Diagnosis() {
 
         <div className= {styles.button}>  
           <div className= {styles.cancelButton}> 
-            <button onClick={() => router.back}>CANCEL</button>
+            <button onClick={() => router.back()}>CANCEL</button>
           </div> 
 
           <div className= {styles.saveButton}> 

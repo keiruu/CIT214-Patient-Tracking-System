@@ -2,7 +2,7 @@
 import styles from '../styles/Patients.module.css'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen, faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faTrash, faUserPlus, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import { useTable, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import { usePagination } from 'react-table/dist/react-table.development'
 // A great library for fuzzy filtering/sorting items
@@ -29,6 +29,7 @@ function GlobalFilter({
     console.log("Error: " + error);
   }
 
+
   return (
     <span className={styles.searchContainer}> 
       <input
@@ -47,15 +48,11 @@ function GlobalFilter({
       
       {/* Diri ka nath tandog */}
       <div>
-        {/* <Link href="/identification" passHref>
-        </Link> */}
-        <button className={styles.btnAddPatient} onClick={() => {
-            // Diri ka code nath, kung pano e open ang modal
-
-
-        }}>
-          <FontAwesomeIcon icon={faUserPlus} size="lg" className={styles.addPatient} />
-        </button>
+        <Link href="/identification" passHref>
+          <button className={styles.btnAddPatient}>
+            <FontAwesomeIcon icon={faUserPlus} size="lg" className={styles.addPatient} />
+          </button>
+        </Link>
       </div>
     </span>
   )
@@ -366,6 +363,8 @@ function Patients() {
            col5: (patient,'diagnosis'.diagnosis.data),
            col6: (
            <div className={styles.actions}>
+             
+             <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
              <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
              <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
              

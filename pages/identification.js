@@ -27,7 +27,7 @@ function Identification() {
       addDoc(patInf, { PN, Fname, Mname, Lname, Sex, DoB, Add, Cont, Gn, GnCont, Allergy })
       .then(response => {
          console.log(response)
-         router.push('/diagnosis')
+         router.push('/patients')
       }) 
       .catch(error => {
          console.log(error.message)
@@ -85,8 +85,8 @@ function Identification() {
                         <textarea type="text" name='allergies' id='allergies' value={Allergy} placeholder='Allergies' onChange={e => setAllergy(e.target.value) }></textarea>
                      </div> 
                      <div className={styles.buttons}>
-                        <button type="reset" className={styles.Button1}>Cancel</button>
-                        <button type="submit" className={styles.Button2}>Next</button>
+                        <button type="reset" className={styles.Button1} onClick={() => router.back()}>Cancel</button>
+                        <button type="submit" className={styles.Button2}>Save</button>
                      </div>
                </div>
            </div>
