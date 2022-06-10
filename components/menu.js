@@ -12,11 +12,11 @@ function MyDropdown() {
   const [doctor, setDoctor] = useState()
   const router = useRouter()
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log(userName)
     const doc = userName.split(" ")
     setDoctor(doc[0])
-  }, [userName])
+  }, [userName])*/
 
   return (
     <div className={styles.container}>
