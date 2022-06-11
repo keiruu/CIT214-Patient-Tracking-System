@@ -47,14 +47,14 @@ export default function Patients() {
       <div className={styles.leftContainer}>
         <Header/>
         <div className={styles.table}>
-          <ul>
+          {/* <ul>
             {patientinfo.map(
               PatInfo => 
               <li key={PatInfo.id}>
                 {PatInfo.data.Fname}, {PatInfo.data.Mname}
               </li>   
             )}
-          </ul>
+          </ul> */}
           <Table/>
         </div>
       </div>

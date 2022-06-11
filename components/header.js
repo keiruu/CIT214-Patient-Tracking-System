@@ -16,7 +16,7 @@ function Header() {
   // Change this according to how you would fetch the doctor's name from DB
   const size = "lg"
   
-  /*useEffect(() => {
+  useEffect(() => {
     let doctor
     const name = userName.split(" ")
     if(name.length >= 3) {
@@ -24,7 +24,7 @@ function Header() {
     } else {
       setDoctor({firstName: name[0], lastName: name[1]})
     }
-  }, [userName])*/
+  }, [userName])
   
   return (
     <div className={styles.container}>
