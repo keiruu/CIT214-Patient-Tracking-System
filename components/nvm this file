@@ -1,48 +1,48 @@
-const [patientinfo, setPatientinfo] = useState([]);
+// const [patientinfo, setPatientinfo] = useState([]);
     
-  useEffect(() => {
-  getpatientInfo()
-  },  [])
+//   useEffect(() => {
+//   getpatientInfo()
+//   },  [])
 
-  useEffect(() => {
-    console.log(patientinfo)
-  }, [patientinfo])
+//   useEffect(() => {
+//     console.log(patientinfo)
+//   }, [patientinfo])
 
-  function getpatientInfo(){
-    const patinfoCollectionRef = subcollection(db, 'patientInfo')
-    getDocs(patinfoCollectionRef)
-    .then(response => {
-    const PatientInfo = response.docs.map(doc => ({
-    data: doc.data(),
-    id: doc.id,
-  }))
-   setPatientinfo(PatientInfo)
+//   function getpatientInfo(){
+//     const patinfoCollectionRef = subcollection(db, 'patientInfo')
+//     getDocs(patinfoCollectionRef)
+//     .then(response => {
+//     const PatientInfo = response.docs.map(doc => ({
+//     data: doc.data(),
+//     id: doc.id,
+//   }))
+//    setPatientinfo(PatientInfo)
       
-    })
-    .catch(error => console.log(error.message))
-  }
+//     })
+//     .catch(error => console.log(error.message))
+//   }
 
-  useEffect(() => {
-    if (!user) {
-        console.log("No user defined");
-    } else {
-        const getData = async () => {
-          const db = getFirestore()
-          const q = query(collection(db, 'users'))
-          const snapshot = await getDocs(q)
-          const data = snapshot.docs.map((doc)=>({
-              ...doc.data(), id:doc.id
-          }))
-          data.map(async (elem)=>{
-            const workQ = query(collection(db, `users/${elem.id}/workInfo`))
-            const workDetails = await getDocs(workQ)
-            const  = workDetails.docs.map((doc)=>({
-                ...doc.data(), id:doc.id
-            }))
-            setWorkData(workInfo);
-          })
-        }
-        getData()
+//   useEffect(() => {
+//     if (!user) {
+//         console.log("No user defined");
+//     } else {
+//         const getData = async () => {
+//           const db = getFirestore()
+//           const q = query(collection(db, 'users'))
+//           const snapshot = await getDocs(q)
+//           const data = snapshot.docs.map((doc)=>({
+//               ...doc.data(), id:doc.id
+//           }))
+//           data.map(async (elem)=>{
+//             const workQ = query(collection(db, `users/${elem.id}/workInfo`))
+//             const workDetails = await getDocs(workQ)
+//             const  = workDetails.docs.map((doc)=>({
+//                 ...doc.data(), id:doc.id
+//             }))
+//             setWorkData(workInfo);
+//           })
+//         }
+//         getData()
 
-    }
-}, [user])
+//     }
+// }, [user])

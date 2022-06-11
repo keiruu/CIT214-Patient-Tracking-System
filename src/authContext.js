@@ -2,8 +2,10 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, updateProfile, updateEmail, updatePassword } from 'firebase/auth'
 import { auth } from '../src/firebase'
 import styles from '../styles/Home.module.css'
-
+import { getDocs, collection, getFirestore, query,  } from 'firebase/firestore';
 import BounceLoader from "react-spinners/BounceLoader";
+import { faPen, faTrash, faUserPlus, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const AuthContext = createContext({})
 
@@ -14,9 +16,12 @@ export const AuthContextProvider = ({children}) => {
   const [loading, setLoading] = useState(true)
   const [userUID, setUserUID] = useState()
   const [userName, setUserName] = useState()
+  const [patientData, setPatientData] = useState([{}])
   console.log("User ", currentUser)
   console.log("UID ", userUID)
   console.log("Display Name ", userName)
+  console.log("patientData ", patientData)
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -24,6 +29,8 @@ export const AuthContextProvider = ({children}) => {
         setUserUID(user.uid)
         setCurrentUser(user)
         setUserName(user.displayName)
+        getData()
+        
       } else {
         setCurrentUser(null)
       }
@@ -86,8 +93,34 @@ export const AuthContextProvider = ({children}) => {
     return updatePassword(currentUser, password)
   }
   
+  const getData = async () => {
+    const db = getFirestore()
+    const q = query(collection(db, 'patientInfo'))
+    const snapshot = await getDocs(q)
+    const data = snapshot.docs.map((doc)=>({
+        ...doc.data(), id:doc.id
+    }))
+    data.map(async (element)=>{
+      const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`))
+      const diagnosisDetails = await getDocs(diagnosisQ)
+      const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
+          ...doc.data(),
+            id:doc.id
+      }))
+      // console.log(diagnosisInfo);
+      console.log("length", diagnosisInfo.length)
+
+      if(diagnosisInfo.length > 0) {
+        setPatientData(diagnosisInfo)
+
+        return patientData
+      } 
+    })
+  }
+  
+
   return (
-    <AuthContext.Provider value={{ updateDisplayName, updateUserEmail, updateUserPass, currentUser, login, signup, logout, userUID, resetPassword, userName }}>
+    <AuthContext.Provider value={{ getData, patientData, setPatientData, updateDisplayName, updateUserEmail, updateUserPass, currentUser, login, signup, logout, userUID, resetPassword, userName }}>
         {loading ? 
             <div className={styles.loader}>
                 <BounceLoader color="#6C71F8" loading={loading} size={105} css={ 

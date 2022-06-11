@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 
 import styles from '../styles/Patients.module.css'
 import Link from 'next/link'
@@ -9,9 +10,9 @@ import { usePagination } from 'react-table/dist/react-table.development'
 import matchSorter from 'match-sorter'
 import React, { useState } from 'react';
 import { db } from '../src/firebase';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { getDocs, collection, getFirestore, query,  } from 'firebase/firestore';
-
+import { useAuth } from '../src/authContext'
 
 
 // Define a default UI for filtering
@@ -138,7 +139,6 @@ function Table({ columns, data }) {
     state: { pageIndex, pageSize },
   } = useTable(
     {
-      
       columns,
       data,
       defaultColumn, // Be sure to pass the defaultColumn option
@@ -287,35 +287,32 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
 
   const Patient = () => {
-    const [diagnosisData, setDiagnosisData] = useState([])
-   
-
-    useEffect(() => {
+    const [diagnosisData, setDiagnosisData] = useState([{}])
+    const { patientData } = useAuth()
+    const [ deets, setDeets ] = useState()
     
-            const getData = async () => {
-              const db = getFirestore()
-              const q = query(collection(db, 'patientInfo'))
-              const snapshot = await getDocs(q)
-              const data = snapshot.docs.map((doc)=>({
-                  ...doc.data(), id:doc.id
-              }))
-              data.map(async (element)=>{
-                const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`))
-                const diagnosisDetails = await getDocs(diagnosisQ)
-                const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
-                    ...doc.data(),
-                     id:doc.id
-                }))
-                console.log(diagnosisInfo);
-              })
-           
-            }
-            getData()
+    useEffect(() => {
+      console.log("data", patientData)
+      // Show table
+      setDeets(patientData.map((element) => 
+      ({
+        col1: element.Fname,
+        col2: element.date,
+        col3: element.date,
+        col4: element.visitationtime,
+        col5: element.diagnosis,
+        col6: (
+        <div className={styles.actions}>
+          <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
+          <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+          <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+        </div>
+        )
+      })
+    ))
+    console.log("deets ", deets)
+    }, [patientData])
 
-        
-    }, )
-
-  
   // Column names
   const columns = React.useMemo(
     () => [
@@ -350,47 +347,10 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
   // Set icon size sa actions
   const size = 'lg'
 
-  // Change according to how you would get patient data
-  
-  
-  // Value of columns
-  
-  
-  const data = React.useMemo(
-    () => 
-        
-      diagnosisData.map((element) => 
-       (
-        
-         {
-           col1: key = element.id,
-           col2: element.Fname,
-           col3: element.date,
-           col4: element.data.visitationTime,
-           col5: element.data.date,
-           col6: (
-           <div className={styles.actions}>
-             
-             <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
-             <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-             <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
-             
-           </div>
-           
-           )
-         },
-        ) // It works, and you know what to do if something works.. DON'T TOUCH IT. Will figure out how to fix it but it works anyways
-     )
-    , []
- )
-
-  return ( 
-    
-  <Table columns={columns} data={data} />
-    
-
-   
+  return (
+    <div>
+      {deets && <Table columns={columns} data={deets} />}
+    </div>
   )
-
   }
 export default Patient
