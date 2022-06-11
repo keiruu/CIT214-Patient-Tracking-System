@@ -44,17 +44,18 @@ function GlobalFilter({
         placeholder="Search for patient"
         className={styles.filter}
       />
-      {/* <div>
-        Date:
+      <div>
+        {/* Date: */}
       </div>
       
+      {/* Diri ka nath tandog */}
       <div>
         <Link href="/identification" passHref>
           <button className={styles.btnAddPatient}>
             <FontAwesomeIcon icon={faUserPlus} size="lg" className={styles.addPatient} />
           </button>
         </Link>
-      </div> */}
+      </div>
     </span>
   )
 }
@@ -287,19 +288,17 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
   const Patient = () => {
     const [diagnosisData, setDiagnosisData] = useState([{}])
-    const { patientData } = useAuth()
+    const { patients } = useAuth()
     const [ deets, setDeets ] = useState()
     
     useEffect(() => {
-      console.log("data", patientData)
+      console.log("data", patients)
       // Show table
-      setDeets(patientData.map((element) => 
+      setDeets(patients.map((element) => 
       ({
-        col1: element.name,
-        col2: element.contactNumber,
-        col3: element.date,
-        col4: element.visitationTime,
-        col5: element.diagnosis,
+        col1: element.Fname + " " + element.Lname,
+        col2: element.Cont,
+        col3: element.Add,
         col6: (
         <div className={styles.actions}>
           <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
@@ -310,7 +309,7 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
       })
     ))
     console.log("deets ", deets)
-    }, [patientData])
+    }, [patients])
 
   // Column names
   const columns = React.useMemo(
@@ -324,16 +323,8 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
         accessor: 'col2',
       },
       {
-        Header: 'Date',
+        Header: 'Address',
         accessor: 'col3', 
-      },
-      {
-        Header: 'Visitation Time',
-        accessor: 'col4',
-      },
-      {
-        Header: 'Latest Diagnosis',
-        accessor: 'col5',
       },
       {
         Header: 'Actions',

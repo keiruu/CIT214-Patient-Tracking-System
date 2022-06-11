@@ -1,4 +1,4 @@
-import Table from '../components/tableAllPatients'
+import Table from '../components/table'
 import Header from '../components/header'
 import Sidebar from '../components/sidebar'
 import styles from '../styles/Patients.module.css'
@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { db } from '../src/firebase';
 import { useEffect } from 'react';
 
-export default function Patients() {
+export default function PatientsHistory() {
   /*const [PN, setNum] = useState('');*/
   const [patientinfo, setPatientinfo] = useState([]);
   /*const [Mname, setMname] = useState('');

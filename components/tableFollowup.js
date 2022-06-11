@@ -276,31 +276,29 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
   const Patient = () => {
     const [diagnosisData, setDiagnosisData] = useState([{}])
-    const { patientData } = useAuth()
+    const { followupData } = useAuth()
     const [ deets, setDeets ] = useState()
     
     useEffect(() => {
-      console.log("data", patientData)
-      // Show table
-      // setDeets(patientData.map((element) => 
-      //   {
-      //     if(element.followup) {
-      //       {col1: element.name,
-      //       col2: element.contactNumber,
-      //       col3: element.followupDate,
-      //       col4: element.diagnosis,
-      //       col6: (
-      //       <div className={styles.actions}>
-      //         <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
-      //         <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-      //         <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
-      //       </div>
-      //       )}
-      //     }
-      //   }
-      // ))
+      console.log("follow", followupData)
+      
+      setDeets(followupData.map((element) => 
+        ({
+          col1: element.name,
+          col2: element.contactNumber,
+          col3: element.followupDate,
+          col4: element.diagnosis,
+          col6: (
+          <div className={styles.actions}>
+            <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
+            <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+            <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+          </div>
+          )
+        })
+      ))
     console.log("deets ", deets)
-    }, [patientData])
+    }, [followupData])
 
   // Column names
   const columns = React.useMemo(

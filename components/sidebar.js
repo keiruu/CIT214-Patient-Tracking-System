@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../styles/Sidebar.module.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse, faChartColumn, faCalendar, faUsers, faNotesMedical, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import { faHouse, faUserClock, faCalendar, faUsers, faNotesMedical, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -44,7 +44,16 @@ function Sidebar() {
               <Link href='/patients' passHref>
                 <div className={router.pathname == "/patients" ? styles.active : styles.inactive}>
                 <FontAwesomeIcon icon={faUsers} size={size} />
-                <span>Patients</span>
+                <span>Patient List</span>
+                </div>
+              </Link>
+            </span>
+
+            <span>
+              <Link href='/patientsHistory' passHref>
+                <div className={router.pathname == "/patientsHistory" ? styles.active : styles.inactive}>
+                <FontAwesomeIcon icon={faUserClock} size={size} />
+                <span>Patient History</span>
                 </div>
               </Link>
             </span>
