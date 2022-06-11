@@ -1,14 +1,16 @@
-import React from 'react'
+/* eslint-disable react/jsx-key */
+import React, { useEffect, useState } from 'react'
 import styles from '../styles/Patients.module.css'
 import Link from 'next/link'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen, faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons'
+import { faMoneyBillTrendUp, faPen, faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { useTable, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import { usePagination } from 'react-table/dist/react-table.development'
 // A great library for fuzzy filtering/sorting items
 import matchSorter from 'match-sorter'
-
+import { useAuth } from '../src/authContext'
+import { useRouter } from 'next/router'
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -263,7 +265,63 @@ function filterGreaterThan(rows, id, filterValue) {
 // check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
-function App() {
+const History = () => {
+  const [diagnosisData, setDiagnosisData] = useState([{}])
+  const { patientDiagnosisHistory, getPatientDiagnosisHistory } = useAuth()
+  const [ deets, setDeets ] = useState()
+  const [ data, setData ] = useState()
+  const [ patientHistory, setPatientHistory ] = useState()
+  const router = useRouter()
+  
+  // useEffect(() => {
+  //   console.log("data", patientHistory)
+  //   // Show table
+  //   console.log("HERE")
+  //   if(patientHistory) {
+  //     setDeets(patientHistory.map((element) => 
+  //       ({
+  //         col1: element.diagnosis,
+  //         col2: element.date,
+  //         col3: element.visitationTime,
+  //         col4: (
+  //         <div className={styles.actions}>
+  //           <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+  //           <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+  //         </div>
+  //         )
+  //       })
+  //     ))
+  //   }
+  //   console.log("deets ", deets)
+  // }, [patientHistory])
+ 
+  useEffect(() => {
+    const route = router.asPath.split("/")
+    const routeID = route[route.length-1]
+    console.log("routeID ", routeID)
+    if(patientDiagnosisHistory){
+      handleGet(routeID)
+      console.log("here")
+    }
+  }, [])
+  
+  const handleGet = async (routeID) => {
+    setPatientHistory(await getPatientDiagnosisHistory(routeID))
+    
+    setDeets(patientDiagnosisHistory.map((element) => 
+        ({
+          col1: element.diagnosis,
+          col2: element.date,
+          col3: element.visitationTime,
+          col4: (
+          <div className={styles.actions}>
+            <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+            <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+          </div>
+          )
+        })
+      ))
+  }
 
   // Column names
   
@@ -291,61 +349,14 @@ function App() {
     []
   )
   
-
   // Set icon size sa actions
   const size = 'lg'
 
-  // Change according to how you would get patient data
-  const patientData = [
-    {
-      name: 'Zenrick Parcon',
-      contactNumber: '09498653498',
-      date: '04/25/2022',
-      visitationTime: '9:15-9:45 AM',
-      diagnosis: 'Fever & Cough'
-    },
-    {
-      name: 'Thrys Formoso',
-      contactNumber: '09124698753',
-      date: '04/25/2022',
-      visitationTime: '9:45-10:30 AM',
-      diagnosis: 'Fever'
-    },
-    {
-      name: 'Abigail Kaye Unating',
-      contactNumber: '09234956875',
-      date: '04/25/2022',
-      visitationTime: '10:30-11:05 AM',
-      diagnosis: 'Diarrhea'
-    },
-  ]
-
-  // Value of columns
-  const data = React.useMemo(
-    () => 
-      patientData.map(patient => 
-       (
-         {
-           col1: patient.diagnosis,
-           col2: patient.date,
-           col3: patient.visitationTime,
-           col4: (
-           <div className={styles.actions}>
-             <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-             <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
-           </div>
-           )
-         },
-       ) // It works, and you know what to do if something works.. DON'T TOUCH IT. Will figure out how to fix it but it works anyways
-     )
-    , []
- )
-
   return (
-
-      <Table columns={columns} data={data} />
-
+    <div>
+     {deets && <Table columns={columns} data={deets} />}
+    </div>
   )
 }
 
-export default App
+export default History

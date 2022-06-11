@@ -10,9 +10,10 @@ import { useRouter } from 'next/router'
 
 
 export default function PatientData() {
-  const {getPatient, patient} = useAuth()
+  const {getPatient, patient, getPatientDiagnosisHistory} = useAuth()
   const router = useRouter()
   const [patientInfo, setPatientInfo] = useState()
+  const [patientHistory, setPatientHistory] = useState()
   const [ deets, setDeets ] = useState(false)
     
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function PatientData() {
  
   const handleGet = async (routeID) => {
     setPatientInfo(await getPatient(routeID))
+    // setPatientHistory(await getPatientDiagnosisHistory(routeID))
     console.log("INFO: ", patientInfo) 
   }
 
@@ -69,7 +71,7 @@ export default function PatientData() {
         </div>
 
         <div className={styles.histoTable}>
-          <HistoryTable/>
+          <HistoryTable patientHistory={patientHistory}/>
         </div>
       </div>
     </div>
