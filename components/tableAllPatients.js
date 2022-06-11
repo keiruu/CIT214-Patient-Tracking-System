@@ -296,7 +296,11 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
       // Show table
       setDeets(patients.map((element) => 
       ({
-        col1: element.Fname + " " + element.Lname,
+        col1: (
+          <Link href={'/patient/' + element.id}>
+            {element.Fname + " " + element.Lname}
+          </Link>
+        ),
         col2: element.Cont,
         col3: element.Add,
         col6: (

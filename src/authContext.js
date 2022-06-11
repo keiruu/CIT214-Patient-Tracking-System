@@ -2,10 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, updateProfile, updateEmail, updatePassword } from 'firebase/auth'
 import { auth } from '../src/firebase'
 import styles from '../styles/Home.module.css'
-import { getDocs, collection, getFirestore, query, where  } from 'firebase/firestore';
+import { getDocs, collection, getFirestore, query, where, doc, getDoc  } from 'firebase/firestore';
 import BounceLoader from "react-spinners/BounceLoader";
-import { faPen, faTrash, faUserPlus, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const AuthContext = createContext({})
 
@@ -19,13 +17,14 @@ export const AuthContextProvider = ({children}) => {
   const [patientData, setPatientData] = useState([{}])
   const [followupData, setFollowupData] = useState([{}])
   const [patients, setPatients] = useState([{}])
+  const [patient, setPatient] = useState()
 
   console.log("User ", currentUser)
   console.log("UID ", userUID)
   console.log("Display Name ", userName)
   console.log("patientData ", patientData)
   console.log("Patients ", patients)
-
+  console.log("Patient ", patient)
 
 
   useEffect(() => {
@@ -175,11 +174,22 @@ export const AuthContextProvider = ({children}) => {
       } 
     // })
   }
+
+  const getPatient = async (id) => {
+    const db = getFirestore()
+    const q = query(collection(db, 'patientInfo'), where ('id', '==', id))
+    const docRef = doc(db, 'patientInfo', id);
+    const snapshot = await getDoc(docRef)
+
+    console.log("doc data ", snapshot.data())
+    setPatient(snapshot.data())
+    return snapshot.data()
+  }
   
   
 
   return (
-    <AuthContext.Provider value={{ patients, followupData, getData, patientData, setPatientData, updateDisplayName, updateUserEmail, updateUserPass, currentUser, login, signup, logout, userUID, resetPassword, userName }}>
+    <AuthContext.Provider value={{ getPatient, patient, patients, followupData, getData, patientData, setPatientData, updateDisplayName, updateUserEmail, updateUserPass, currentUser, login, signup, logout, userUID, resetPassword, userName }}>
         {loading ? 
             <div className={styles.loader}>
                 <BounceLoader color="#6C71F8" loading={loading} size={105} css={ 
