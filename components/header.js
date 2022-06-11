@@ -35,10 +35,10 @@ function Header() {
           </div>
 
           <div className={styles.end}>
-            <div className={styles.icon}>
+            {/* <div className={styles.icon}>
               <FontAwesomeIcon icon={faMagnifyingGlass} size={size}/>
               <FontAwesomeIcon icon={faBell} size={size}/>
-            </div>
+            </div> */}
             
             <div className={styles.profile}>
               {/* <FontAwesomeIcon icon={faUserDoctor} />

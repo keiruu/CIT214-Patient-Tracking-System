@@ -17,6 +17,16 @@
   justify-content: center;
 }
 
+.add {
+  cursor: pointer;
+  color: var(--purple);
+  transition: all 300ms ease;
+}
+
+.add:hover {
+  color: #4146c3;
+}
+
 .edit {
   color: #A0A4A8;
 }
