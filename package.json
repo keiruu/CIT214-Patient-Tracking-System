@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "next lint"
   },
-  
   "dependencies": {
     "@aldabil/react-scheduler": "^2.2.1",
     "@emotion/react": "^11.9.0",
@@ -17,7 +16,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@headlessui/react": "^1.6.4",
-    "firebase": "^9.8.2",
+    "firebase": "^9.8.3",
     "match-sorter": "^6.3.1",
     "next": "12.1.0",
     "react": "17.0.2",

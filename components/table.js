@@ -10,7 +10,8 @@ import matchSorter from 'match-sorter'
 import React, { useState } from 'react';
 import { db } from '../src/firebase';
 import { useEffect } from 'react';
-import { getDocs, collection } from 'firebase/firestore';
+import { getDocs, collection, getFirestore, query,  } from 'firebase/firestore';
+
 
 
 // Define a default UI for filtering
@@ -283,32 +284,38 @@ function filterGreaterThan(rows, id, filterValue) {
 // check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
-function Patients() {
 
-  const [patientinfo, setPatientinfo] = useState([]);
+
+  const Patient = () => {
+    const [diagnosisData, setDiagnosisData] = useState([])
+   
+
+    useEffect(() => {
     
-  useEffect(() => {
-  getpatientInfo()
-  },  [])
+            const getData = async () => {
+              const db = getFirestore()
+              const q = query(collection(db, 'patientInfo'))
+              const snapshot = await getDocs(q)
+              const data = snapshot.docs.map((doc)=>({
+                  ...doc.data(), id:doc.id
+              }))
+              data.map(async (element)=>{
+                const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`))
+                const diagnosisDetails = await getDocs(diagnosisQ)
+                const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
+                    ...doc.data(),
+                     id:doc.id
+                }))
+                console.log(diagnosisInfo);
+              })
+           
+            }
+            getData()
 
-  useEffect(() => {
-    console.log(patientinfo)
-  }, [patientinfo])
+        
+    }, )
 
-  function getpatientInfo(){
-    const patinfoCollectionRef = collection(db, 'patientInfo')
-    getDocs(patinfoCollectionRef)
-    .then(response => {
-    const PatientInfo = response.docs.map(doc => ({
-    data: doc.data(),
-    id: doc.id,
-  }))
-   setPatientinfo(PatientInfo)
-      
-    })
-    .catch(error => console.log(error.message))
-  }
-
+  
   // Column names
   const columns = React.useMemo(
     () => [
@@ -351,16 +358,16 @@ function Patients() {
   
   const data = React.useMemo(
     () => 
-    
-                    
-      patientinfo.map(patient => 
+        
+      diagnosisData.map((element) => 
        (
+        
          {
-           col1: patient.data.Fname,
-           col2: patient.data.Cont,
-           col3: patient.data.date,
-           col4: patient.data.visitationTime,
-           col5: (patient,'diagnosis'.diagnosis.data),
+           col1: key = element.id,
+           col2: element.Fname,
+           col3: element.date,
+           col4: element.data.visitationTime,
+           col5: element.data.date,
            col6: (
            <div className={styles.actions}>
              
@@ -378,11 +385,12 @@ function Patients() {
  )
 
   return ( 
+    
   <Table columns={columns} data={data} />
-
+    
 
    
   )
-}
 
-export default Patients
+  }
+export default Patient
