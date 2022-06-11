@@ -1,13 +1,18 @@
-import React from 'react'
+/* eslint-disable react/jsx-key */
+
 import styles from '../styles/Patients.module.css'
 import Link from 'next/link'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faTrash, faUserPlus, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import { useTable, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import { usePagination } from 'react-table/dist/react-table.development'
 // A great library for fuzzy filtering/sorting items
 import matchSorter from 'match-sorter'
+import React, { useState } from 'react';
+import { db } from '../src/firebase';
+import { useEffect, useMemo } from 'react';
+import { getDocs, collection, getFirestore, query,  } from 'firebase/firestore';
+import { useAuth } from '../src/authContext'
 
 
 // Define a default UI for filtering
@@ -39,18 +44,6 @@ function GlobalFilter({
         placeholder="Search for patient"
         className={styles.filter}
       />
-      <div>
-        {/* Date: */}
-      </div>
-      
-      {/* Diri ka nath tandog */}
-      <div>
-        <Link href="/identification" passHref>
-          <button className={styles.btnAddPatient}>
-            <FontAwesomeIcon icon={faUserPlus} size="lg" className={styles.addPatient} />
-          </button>
-        </Link>
-      </div>
     </span>
   )
 }
@@ -82,7 +75,9 @@ fuzzyTextFilterFn.autoRemove = val => !val
 
 // Our table component
 function Table({ columns, data }) {
+  
   const filterTypes = React.useMemo(
+    
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
       fuzzyText: fuzzyTextFilterFn,
@@ -156,7 +151,9 @@ function Table({ columns, data }) {
               />
       <table {...getTableProps()} className={styles.patientTable}>
         <thead>
+          
           {headerGroups.map(headerGroup => (
+            
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th {...column.getHeaderProps()}
@@ -185,19 +182,26 @@ function Table({ columns, data }) {
             </th>
           </tr> */}
         </thead>
+        
         <tbody {...getTableBodyProps()}>
+          
+          
           {firstPageRows.map((row, i) => {
             prepareRow(row)
+            
             return (
               <tr {...row.getRowProps()}>
+                
                 {row.cells.map(cell => {
+                 
                   return <td {...cell.getCellProps()}
                     style={{
                       padding: '25px 10px',
                       background: 'white',
                       borderBottom: '1px solid #F2F6FE'
                     }}
-                  >{cell.render('Cell')}</td>
+                  >{cell.render('Cell')}
+                  </td>
                 })}
               </tr>
             )
@@ -268,7 +272,35 @@ function filterGreaterThan(rows, id, filterValue) {
 // check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
-function App() {
+
+
+  const Patient = () => {
+    const [diagnosisData, setDiagnosisData] = useState([{}])
+    const { patientData } = useAuth()
+    const [ deets, setDeets ] = useState()
+    
+    useEffect(() => {
+      console.log("data", patientData)
+      // Show table
+      // setDeets(patientData.map((element) => 
+      //   {
+      //     if(element.followup) {
+      //       {col1: element.name,
+      //       col2: element.contactNumber,
+      //       col3: element.followupDate,
+      //       col4: element.diagnosis,
+      //       col6: (
+      //       <div className={styles.actions}>
+      //         <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
+      //         <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+      //         <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+      //       </div>
+      //       )}
+      //     }
+      //   }
+      // ))
+    console.log("deets ", deets)
+    }, [patientData])
 
   // Column names
   const columns = React.useMemo(
@@ -300,62 +332,10 @@ function App() {
   // Set icon size sa actions
   const size = 'lg'
 
-  // Change according to how you would get patient data
-  const patientData = [
-    {
-      name: 'Zenrick Parcon',
-      contactNumber: '09498653498',
-      date: '04/25/2022',
-      visitationTime: '9:15-9:45 AM',
-      diagnosis: 'Fever & Cough'
-    },
-    {
-      name: 'Thrys Formoso',
-      contactNumber: '09124698753',
-      date: '04/25/2022',
-      visitationTime: '9:45-10:30 AM',
-      diagnosis: 'Fever'
-    },
-    {
-      name: 'Abigail Kaye Unating',
-      contactNumber: '09234956875',
-      date: '04/25/2022',
-      visitationTime: '10:30-11:05 AM',
-      diagnosis: 'Diarrhea'
-    },
-  ]
-
-  // Value of columns
-  const data = React.useMemo(
-    () => 
-      patientData.map(patient => 
-       (
-         {
-           col1: patient.name,
-           col2: patient.contactNumber,
-           col3: patient.date,
-           col4: patient.visitationTime,
-           col5: patient.diagnosis,
-           col6: (
-           <div className={styles.actions}>
-             
-             <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
-             <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-             <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
-             
-           </div>
-           )
-         },
-        ) // It works, and you know what to do if something works.. DON'T TOUCH IT. Will figure out how to fix it but it works anyways
-     )
-    , []
- )
-
   return (
-
-      <Table columns={columns} data={data} />
-
+    <div>
+      {deets && <Table columns={columns} data={deets} />}
+    </div>
   )
-}
-
-export default App
+  }
+export default Patient

@@ -296,10 +296,10 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
       // Show table
       setDeets(patientData.map((element) => 
       ({
-        col1: element.Fname,
-        col2: element.date,
+        col1: element.name,
+        col2: element.contactNumber,
         col3: element.date,
-        col4: element.visitationtime,
+        col4: element.visitationTime,
         col5: element.diagnosis,
         col6: (
         <div className={styles.actions}>
