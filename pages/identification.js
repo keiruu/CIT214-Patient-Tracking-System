@@ -20,19 +20,16 @@ function Identification() {
 
    function handleSubmit(e){
       e.preventDefault()
-      if (PN === '') {
-         return
-      }
       const patInf = collection(db,"patientInfo")
-      addDoc(patInf, { PN, Fname, Mname, Lname, Sex, DoB, Add, Cont, Gn, GnCont, Allergy })
+      addDoc(patInf, { Fname, Mname, Lname, Sex, DoB, Add, Cont, Gn, GnCont, Allergy })
       .then(response => {
          console.log(response)
-         router.push('/patients')
+         window.location.assign('http://localhost:3000/patients')
+         // router.push('/patients')
       }) 
       .catch(error => {
          console.log(error.message)
       })
-      
    }
    
   return (
@@ -46,10 +43,10 @@ function Identification() {
         <form onSubmit={handleSubmit}>
            <div className={styles.gridcontainer}>
                <div className={styles.flexcontainer}>
-                     <div className={styles.PN}>
+                     {/* <div className={styles.PN}>
                         <input type="text" name='PN' id='PN' value={PN}  placeholder='Patients No.' required onChange={e => setNum(e.target.value) }></input>
-                     </div>
-                       <div className={styles.Fname}>
+                     </div> */}
+                     <div className={styles.Fname}>
                         <input type="text" name='Fname' id='Fname' value={Fname} placeholder='First Name' required onChange={e => setFname(e.target.value) }></input>
                      </div>
                     <div className={styles.Mname}>

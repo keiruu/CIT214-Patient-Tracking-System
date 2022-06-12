@@ -292,24 +292,46 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
       console.log("data", patientData)
       // Show table
       setDeets(patientData.map((element) => 
-      ({
-        col1: (
-          <Link href={'/patientdiagnosis/' + element.id}>
-            {element.name}
-          </Link>
-        ),
-        col2: element.contactNumber,
-        col3: element.date,
-        col4: element.visitationTime,
-        col5: element.diagnosis,
-        col6: (
-        <div className={styles.actions}>
-          <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
-          <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-          <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
-        </div>
-        )
-      })
+      {
+        console.log("eelkjlk", JSON.stringify(element))
+        const datentime = element.date.split("T")
+        const date = datentime[0]
+        const time = datentime[1]
+        return ({
+          col1: (
+            <Link href={'/patientdiagnosis/' + element.id}>
+              {element.name}
+            </Link>
+          ),
+          col3: date,
+          col4: time,
+          col5: element.diagnosis,
+          col6: (
+          <div className={styles.actions}>
+            <Link href={'/diagnosis/' + element.id}>          
+              <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
+            </Link>
+            <button className={styles.delete} onClick={() => { 
+              window.location.assign('http://localhost:3000/diagnosis/edit/' + element.id)
+            }}>
+              <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+            </button>
+            <button className={styles.delete} onClick={() => {
+              console.log("triggered")
+              deletePatient(element.id)
+              toast.success("Successfully deleted patient", {
+                position: toast.POSITION.BOTTOM_RIGHT
+              });
+              setInterval(() => {
+                window.location.reload();
+              }, 1000);
+            }}>
+              <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+            </button>
+          </div>
+          )
+        })
+      }
     ))
     console.log("deets ", deets)
     }, [patientData])
@@ -320,10 +342,6 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
       {
         Header: 'Name',
         accessor: 'col1', // accessor is the "key" in the data
-      },
-      {
-        Header: 'Contact Number',
-        accessor: 'col2',
       },
       {
         Header: 'Date',

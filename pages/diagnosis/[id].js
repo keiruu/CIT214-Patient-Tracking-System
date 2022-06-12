@@ -54,7 +54,7 @@ const handleChange = (e) => {
           date: info.date,
           diagnosis: info.diagnosis,
       });
-      return snapshot.data()
+      window.location.assign('http://localhost:3000/patients')
     }
     console.log(routeID);
     getData(routeID);
@@ -111,7 +111,7 @@ const handleChange = (e) => {
 
         <div className= {styles.button}>  
           <div className= {styles.cancelButton}> 
-            <button onClick={() => router.back()}>CANCEL</button>
+            <button type='button' onClick={() => router.back()}>CANCEL</button>
           </div> 
 
           <div className= {styles.saveButton}> 

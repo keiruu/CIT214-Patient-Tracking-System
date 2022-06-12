@@ -13,7 +13,8 @@ import { db } from '../src/firebase';
 import { useEffect, useMemo } from 'react';
 import { getDocs, collection, getFirestore, query,  } from 'firebase/firestore';
 import { useAuth } from '../src/authContext'
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -287,8 +288,7 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
 
   const Patient = () => {
-    const [diagnosisData, setDiagnosisData] = useState([{}])
-    const { patients } = useAuth()
+    const { patients, deletePatient } = useAuth()
     const [ deets, setDeets ] = useState()
     
     useEffect(() => {
@@ -301,23 +301,30 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
             {element.Fname + " " + element.Lname}
           </Link>
         ),
-        col2: (
-          <Link href={'/patient/' + element.id}>
-            {element.Cont}
-          </Link>
-        ),
-        col3: (
-          <Link href={'/patient/' + element.id}>
-            {element.Add}
-          </Link>
-        ),
+        col2: element.Cont,
+        col3: element.Add,
         col6: (
         <div className={styles.actions}>
           <Link href={'/diagnosis/' + element.id}>          
             <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
           </Link>
-          <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-          <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+          <button className={styles.delete} onClick={() => { 
+            window.location.assign('http://localhost:3000/identification/edit/' + element.id)
+          }}>
+            <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+          </button>
+          <button className={styles.delete} onClick={() => {
+            console.log("triggered")
+            deletePatient(element.id)
+            toast.success("Successfully deleted patient", {
+              position: toast.POSITION.BOTTOM_RIGHT
+            });
+            setInterval(() => {
+              window.location.reload();
+            }, 1000);
+          }}>
+            <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+          </button>
         </div>
         )
       })
@@ -354,6 +361,7 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
   return (
     <div>
       {deets && <Table columns={columns} data={deets} />}
+      <ToastContainer />
     </div>
   )
   }

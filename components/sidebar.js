@@ -49,14 +49,14 @@ function Sidebar() {
               </Link>
             </span>
 
-            <span>
+            {/* <span>
               <Link href='/patientsHistory' passHref>
                 <div className={router.pathname == "/patientsHistory" ? styles.active : styles.inactive}>
                 <FontAwesomeIcon icon={faUserClock} size={size} />
                 <span>Patient History</span>
                 </div>
               </Link>
-            </span>
+            </span> */}
 
 
             <span>

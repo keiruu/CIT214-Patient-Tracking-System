@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, updateProfile, updateEmail, updatePassword } from 'firebase/auth'
 import { auth } from '../src/firebase'
 import styles from '../styles/Home.module.css'
-import { getDocs, collection, getFirestore, query, where, doc, getDoc  } from 'firebase/firestore';
+import { getDocs, collection, getFirestore, query, where, doc, getDoc, deleteDoc  } from 'firebase/firestore';
 import BounceLoader from "react-spinners/BounceLoader";
 import { useRouter } from 'next/router';
 
@@ -21,7 +21,7 @@ export const AuthContextProvider = ({children}) => {
   const [patient, setPatient] = useState()
   const [patientDiagnosisHistory, setPatientDiagnosisHistory] = useState()
   const router = useRouter()
-
+  let eventArray = [{}]
   // console.log("User ", currentUser)
   // console.log("UID ", userUID)
   // console.log("Display Name ", userName)
@@ -136,6 +136,31 @@ export const AuthContextProvider = ({children}) => {
         return patientData
       } 
     })
+    // const db = getFirestore()
+    // const q = query(collection(db, 'patientInfo'))
+    // const snapshot = await getDocs(q)
+    // const data = snapshot.docs.map((doc)=>({
+    //     ...doc.data(), id:doc.id
+    // }))
+    // data.map(async (element)=>{
+    //   const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`))
+    //   const diagnosisDetails = await getDocs(diagnosisQ)
+    //   const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
+    //       ...doc.data(),
+    //         id:doc.id
+    //   }))
+    //   if(diagnosisInfo.length > 0) {
+    //     diagnosisInfo.map((element) => {
+    //       eventArray.push(element)
+    //     })
+    //     eventArray.map((element) => {
+    //       console.log("go ", element.date)
+    //     })
+    //     setPatientData(eventArray)
+    //   } 
+    // })
+    // console.log("ARRAY ", eventArray)
+    // return patientData
   }
 
   const getFollowup = async () => {
@@ -227,10 +252,20 @@ export const AuthContextProvider = ({children}) => {
     })
   }   
   
+  const deletePatient = async (id) => {
+    const db = getFirestore()
+      const q = query(collection(db, 'patientInfo'), where ('id', '==', id))
+      const docRef = doc(db, 'patientInfo', id);
+      const snapshot = await getDoc(docRef)
+
+      console.log("Delete data ", snapshot.data())
+      await deleteDoc(doc(db, `patientInfo/`, id));
+      console.log("deleted")
+  }
   
 
   return (
-    <AuthContext.Provider value={{ getParentDoc, getPatientDiagnosisHistory, patientDiagnosisHistory, getPatient, patient, patients, followupData, getData, patientData, setPatientData, updateDisplayName, updateUserEmail, updateUserPass, currentUser, login, signup, logout, userUID, resetPassword, userName }}>
+    <AuthContext.Provider value={{ deletePatient, getParentDoc, getPatientDiagnosisHistory, patientDiagnosisHistory, getPatient, patient, patients, followupData, getData, patientData, setPatientData, updateDisplayName, updateUserEmail, updateUserPass, currentUser, login, signup, logout, userUID, resetPassword, userName }}>
         {loading ? 
             <div className={styles.loader}>
                 <BounceLoader color="#6C71F8" loading={loading} size={105} css={ 

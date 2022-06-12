@@ -29,19 +29,24 @@ export default function Schedule() {
         }))
         if(diagnosisInfo.length > 0) {
           diagnosisInfo.map((patient, index) => {
-            const dates = patient.date.split("-")
-            const start = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${patient.visitationTime}`)
-            const timeSplit = patient.visitationTime.split(":")
-            const timeFirst = parseInt(timeSplit[0])
-            const timeAdd = timeFirst === 12 ? 1 : timeFirst + 1
-            console.log(`time ${timeAdd}:${timeSplit[1]}`)
-            const end = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${timeAdd}:${timeSplit[1]}`)
-            eventArray.push({
-              event_id: index,
-              title: patient.name,
-              start: start,
-              end: end,
-            })
+            const datentime = patient.date.split("T")
+            const dates = datentime[0].split("-")
+            const time = datentime[1]
+            console.log("time", time)
+            const start = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${time}`)
+            if(time) {
+              const timeSplit = time.split(":")
+              const timeFirst = parseInt(timeSplit[0])
+              const timeAdd = timeFirst === 12 ? 1 : timeFirst + 1
+              console.log(`time ${timeAdd}:${timeSplit[1]}`)
+              const end = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${timeAdd}:${timeSplit[1]}`)
+              eventArray.push({
+                event_id: index,
+                title: patient.name,
+                start: start,
+                end: end,
+              })
+            }
           }
           )
           // return diagnosisInfo
@@ -55,27 +60,29 @@ export default function Schedule() {
       await getData()
     }
 
-    // if(patientData) {
-    //   let eventArray = [{}]
-    //   patientData.map((patient, index) => {
-    //     const dates = patient.date.split("-")
-    //     const start = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${patient.visitationTime}`)
-    //     const timeSplit = patient.visitationTime.split(":")
-    //     const timeFirst = parseInt(timeSplit[0])
-    //     const timeAdd = timeFirst === 12 ? 1 : timeFirst + 1
-    //     console.log(`time ${timeAdd}:${timeSplit[1]}`)
-    //     const end = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${timeAdd}:${timeSplit[1]}`)
-    //     eventArray.push({
-    //       event_id: index,
-    //       title: patient.name,
-    //       start: start,
-    //       end: end,
-    //     })
+    if(patientData) {
+      let eventArray = [{}]
+      patientData.map((patient, index) => {
+        const datentime = patient.date.split("T")
+        const dates = datentime[0].split("-")
+        const time = datentime[1]
+        const start = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${time}`)
+        const timeSplit = time.split(":")
+        const timeFirst = parseInt(timeSplit[0])
+        const timeAdd = timeFirst === 12 ? 1 : timeFirst + 1
+        console.log(`time ${timeAdd}:${timeSplit[1]}`)
+        const end = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${timeAdd}:${timeSplit[1]}`)
+        eventArray.push({
+          event_id: index,
+          title: patient.name,
+          start: start,
+          end: end,
+        })
         
-    //     setEvents(eventArray)
-    //     }
-    //   )
-    // }
+        setEvents(eventArray)
+        }
+      )
+    }
 
     handleGet().catch(console.error)
   }, [patientData])
