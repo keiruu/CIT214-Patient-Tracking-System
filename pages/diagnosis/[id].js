@@ -3,7 +3,7 @@ import styles from '../../styles/Diagnosis.module.css'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../src/authContext'
 import { db } from '../../src/firebase';
-import { collection, query, getDocs, setDoc, doc, where} from "firebase/firestore";
+import { getFirestore, collection, query, getDoc, setDoc, doc, where, addDoc} from "firebase/firestore";
 
 
 function Diagnosis() {
@@ -40,24 +40,21 @@ const handleChange = (e) => {
   
   const handleSubmit =(e) =>{
     e.preventDefault();
-      const getData = async(id) => {
-      const q = query(collection(db, "patientInfo"), where ("id", "==", id));
-      const querySnapshot = await getDocs(q);
-      const queryData = querySnapshot.docs.map((infos) => ({
-        ...infos.data(),
-        id: infos.id,
-    } 
-    ));
-    console.log(queryData);
-    queryData.map(async (v) => {
-        await setDoc(doc (db, `patientInfo/${v.id}/diagnosis`, info.name), {
-            name: info.name,
-            height: info.height,
-            weight: info.weight,
-            date: info.date,
-            diagnosis: info.diagnosis,
-        });
-    })
+    const getData = async(id) => {
+      const db = getFirestore()
+      const q = query(collection(db, 'patientInfo'), where ('id', '==', id))
+      const docRef = doc(db, 'patientInfo', id);
+      const snapshot = await getDoc(docRef)
+
+      console.log("Diagnosis data ", snapshot.data())
+      await addDoc(collection(db, `patientInfo/${id}/diagnosis`), {
+          name: info.name,
+          height: info.height,
+          weight: info.weight,
+          date: info.date,
+          diagnosis: info.diagnosis,
+      });
+      return snapshot.data()
     }
     console.log(routeID);
     getData(routeID);
