@@ -284,7 +284,6 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
 
   const Patient = () => {
-    const [diagnosisData, setDiagnosisData] = useState([{}])
     const { patientData } = useAuth()
     const [ deets, setDeets ] = useState()
     

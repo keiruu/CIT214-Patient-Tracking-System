@@ -305,7 +305,7 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
         col3: element.Add,
         col6: (
         <div className={styles.actions}>
-          <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
+          <Link href={'/diagnosis/' + element.id}><FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} /></Link>
           <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
           <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
         </div>
