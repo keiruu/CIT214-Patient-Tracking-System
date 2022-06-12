@@ -1,7 +1,6 @@
 import { addDoc, collection } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { db } from '../src/firebase';
-import { useAuth } from "../src/authContext"
 import styles from '../styles/Identification.module.css';
 import { useRouter } from 'next/router'
 
@@ -17,7 +16,6 @@ function Identification() {
    const [Gn, setGn] = useState('');
    const [GnCont, setGnCont] = useState('');
    const [Allergy, setAllergy] = useState('');
-   const {DocID} = useAuth();
    const router = useRouter()
 
    function handleSubmit(e){
@@ -26,7 +24,7 @@ function Identification() {
          return
       }
       const patInf = collection(db,"patientInfo")
-      addDoc(patInf, { PN, Fname, Mname, Lname, Sex, DoB, Add, Cont, Gn, GnCont, Allergy/*, DocID*/})
+      addDoc(patInf, { PN, Fname, Mname, Lname, Sex, DoB, Add, Cont, Gn, GnCont, Allergy })
       .then(response => {
          console.log(response)
          router.push('/patients')
@@ -36,6 +34,7 @@ function Identification() {
       })
       
    }
+   
   return (
     <div>
 
