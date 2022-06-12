@@ -1,19 +1,16 @@
 /* eslint-disable react/jsx-key */
-
+import React, { useEffect, useState } from 'react'
 import styles from '../styles/Patients.module.css'
 import Link from 'next/link'
+import { getDocs, collection, getFirestore, query, where, doc, getDoc  } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen, faTrash, faUserPlus, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons'
+import { faMoneyBillTrendUp, faPen, faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { useTable, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import { usePagination } from 'react-table/dist/react-table.development'
 // A great library for fuzzy filtering/sorting items
 import matchSorter from 'match-sorter'
-import React, { useState } from 'react';
-import { db } from '../src/firebase';
-import { useEffect, useMemo } from 'react';
-import { getDocs, collection, getFirestore, query,  } from 'firebase/firestore';
 import { useAuth } from '../src/authContext'
-
+import { useRouter } from 'next/router'
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -31,34 +28,29 @@ function GlobalFilter({
     console.log("Error: " + error);
   }
 
-
   return (
     <span className={styles.searchContainer}> 
-      <input
+      {/* <input
         value={value || ""}
         onChange={e => {
           setValue(e.target.value);
           onChange(e.target.value);
-        }}
-        // placeholder={`${count} records...`}
-        placeholder="Search for patient"
-        className={styles.filter}
-      />
-      <div>
-        {/* Date: */}
+        }} */}
+        {/* // placeholder={`${count} records...`}
+        // placeholder="Search for patient"
+        // className={styles.filter} */}
+      {/* /> */}
+      {/* <div>
+        Date:
       </div>
-      
-      {/* Diri ka nath tandog */}
-      <div>
+      <div className={styles.btnAddPatient}>
         <Link href="/identification" passHref>
-          <button className={styles.btnAddPatient}>
-            <FontAwesomeIcon icon={faUserPlus} size="lg" className={styles.addPatient} />
-          </button>
+          <FontAwesomeIcon icon={faUserPlus} size="lg" className={styles.addPatient} />
         </Link>
-      </div>
+      </div> */}
     </span>
   )
-}
+} 
 
 // Define a default UI for filtering
 function DefaultColumnFilter({
@@ -87,9 +79,7 @@ fuzzyTextFilterFn.autoRemove = val => !val
 
 // Our table component
 function Table({ columns, data }) {
-  
   const filterTypes = React.useMemo(
-    
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
       fuzzyText: fuzzyTextFilterFn,
@@ -163,9 +153,7 @@ function Table({ columns, data }) {
               />
       <table {...getTableProps()} className={styles.patientTable}>
         <thead>
-          
           {headerGroups.map(headerGroup => (
-            
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th {...column.getHeaderProps()}
@@ -194,26 +182,19 @@ function Table({ columns, data }) {
             </th>
           </tr> */}
         </thead>
-        
         <tbody {...getTableBodyProps()}>
-          
-          
           {firstPageRows.map((row, i) => {
             prepareRow(row)
-            
             return (
               <tr {...row.getRowProps()}>
-                
                 {row.cells.map(cell => {
-                 
                   return <td {...cell.getCellProps()}
                     style={{
                       padding: '25px 10px',
                       background: 'white',
                       borderBottom: '1px solid #F2F6FE'
                     }}
-                  >{cell.render('Cell')}
-                  </td>
+                  >{cell.render('Cell')}</td>
                 })}
               </tr>
             )
@@ -284,77 +265,128 @@ function filterGreaterThan(rows, id, filterValue) {
 // check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
+const History = () => {
+  const [diagnosisData, setDiagnosisData] = useState([{}])
+  const { patientDiagnosisHistory, getPatientDiagnosisHistory } = useAuth()
+  const [ deets, setDeets ] = useState(null)
+  const [ data, setData ] = useState()
+  const [ patientHistory, setPatientHistory ] = useState()
+  const router = useRouter()
+  const [ parentDoc, setParentDoc ] = useState()
+ 
+  useEffect(() => {
+    const route = router.asPath.split("/")
+    const routeID = route[route.length-1]
+    console.log("routeID ", routeID)
 
+    const getParentDoc = async (id) => {
+        const db = getFirestore()
+        const q = query(collection(db, 'patientInfo'))
+        const snapshot = await getDocs(q)
+        const data = snapshot.docs.map((doc)=>({
+            ...doc.data(), id:doc.id
+        }))
+        data.map(async (element)=>{
+            const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`))
+            const diagnosisDetails = await getDocs(diagnosisQ)
+            const diagnosisInfo = diagnosisDetails.docs.map(async (doc)=>{
+                console.log("ref path THIS" , doc.ref.path);
+                console.log("ref parent" , doc.ref.parent.parent.id);
+                const ref = doc.ref.path.split("/")
+                const refPath = ref[ref.length - 1]
 
-  const Patient = () => {
-    const [diagnosisData, setDiagnosisData] = useState([{}])
-    const { patients } = useAuth()
-    const [ deets, setDeets ] = useState()
-    
-    useEffect(() => {
-      console.log("data", patients)
-      // Show table
-      setDeets(patients.map((element) => 
-      ({
-        col1: (
-          <Link href={'/patient/' + element.id}>
-            {element.Fname + " " + element.Lname}
-          </Link>
-        ),
-        col2: (
-          <Link href={'/patient/' + element.id}>
-            {element.Cont}
-          </Link>
-        ),
-        col3: (
-          <Link href={'/patient/' + element.id}>
-            {element.Add}
-          </Link>
-        ),
-        col6: (
-        <div className={styles.actions}>
-          <Link href={'/diagnosis/' + element.id}>          
-            <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
-          </Link>
-          <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-          <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
-        </div>
-        )
+                if(refPath === routeID){
+                    setParentDoc(doc.ref.parent.parent.id)
+                    console.log(doc.ref.parent.parent.id)
+                }
+            })
+        })
+    }
+
+    const getHistory = async (routeID) => {
+      const db = getFirestore()
+      const q = query(collection(db, 'patientInfo'))
+      const snapshot = await getDocs(q)
+      const data = snapshot.docs.map((doc)=>({
+          ...doc.data(), id:doc.id
+      }))
+      await getParentDoc()
+      .then(() => {
+        data.map(async (element) => {
+            const diagnosisQ = query(collection(db, `patientInfo/${parentDoc}/diagnosis`))
+            const diagnosisDetails = await getDocs(diagnosisQ)
+            const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
+                ...doc.data(),
+                  id:doc.id
+            })) 
+      
+            if(diagnosisInfo.length > 0) {
+              setDeets(diagnosisInfo.map((element) => 
+                ({
+                  col1: element.diagnosis,
+                  col2: element.date,
+                  col3: element.visitationTime,
+                  col4: (
+                  <div className={styles.actions}>
+                    <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+                    <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+                  </div>
+                  )
+                })
+              ))
+              return diagnosisInfo
+            } else {
+              setDeets(null)
+            }
+          })
       })
-    ))
-    console.log("deets ", deets)
-    }, [patients])
+    }  
 
+    const handleGet = async (routeID) => {
+      await getHistory(routeID)
+    }
+  
+    handleGet(routeID).catch(console.error)
+  }, [])
+  
   // Column names
+  
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: 'Diagnosis',
         accessor: 'col1', // accessor is the "key" in the data
       },
       {
-        Header: 'Contact Number',
+        Header: 'Date',
         accessor: 'col2',
       },
       {
-        Header: 'Address',
+        Header: 'Visitation Time',
         accessor: 'col3', 
       },
       {
         Header: 'Actions',
-        accessor: 'col6',
+        accessor: 'col4',
       },
+
     ],
+    
     []
   )
-
+  
   // Set icon size sa actions
   const size = 'lg'
 
   return (
     <div>
-      {deets && <Table columns={columns} data={deets} />}
+     {deets ? <Table columns={columns} data={deets}/> : 
+      <div className={styles.noHistory}>
+        <p>Patient has no history yet.</p>
+      </div>
+    }
     </div>
   )
-  }
-export default Patient
+}
+
+export default History

@@ -43,6 +43,7 @@ export const AuthContextProvider = ({children}) => {
           const route = router.asPath.split("/")
           const routeID = route[route.length-1]
           getPatientDiagnosisHistory(routeID)
+          getParentDoc()
         }
       
       } else {
@@ -186,6 +187,23 @@ export const AuthContextProvider = ({children}) => {
     return snapshot.data()
   }
 
+  const getParentDoc = async (id) => {
+    const db = getFirestore()
+    const q = query(collection(db, 'patientInfo'))
+    const snapshot = await getDocs(q)
+    const data = snapshot.docs.map((doc)=>({
+        ...doc.data(), id:doc.id
+    }))
+    data.map(async (element)=>{
+      const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`))
+      const diagnosisDetails = await getDocs(diagnosisQ)
+      const diagnosisInfo = diagnosisDetails.docs.map((doc)=>{
+        console.log("ref path" , doc.ref.path);
+        console.log("ref parent" , doc.ref.parent.parent.id);
+      })
+    })
+  }
+
   const getPatientDiagnosisHistory = async (routeID) => {
     const db = getFirestore()
     const q = query(collection(db, 'patientInfo'))
@@ -212,7 +230,7 @@ export const AuthContextProvider = ({children}) => {
   
 
   return (
-    <AuthContext.Provider value={{ getPatientDiagnosisHistory, patientDiagnosisHistory, getPatient, patient, patients, followupData, getData, patientData, setPatientData, updateDisplayName, updateUserEmail, updateUserPass, currentUser, login, signup, logout, userUID, resetPassword, userName }}>
+    <AuthContext.Provider value={{ getParentDoc, getPatientDiagnosisHistory, patientDiagnosisHistory, getPatient, patient, patients, followupData, getData, patientData, setPatientData, updateDisplayName, updateUserEmail, updateUserPass, currentUser, login, signup, logout, userUID, resetPassword, userName }}>
         {loading ? 
             <div className={styles.loader}>
                 <BounceLoader color="#6C71F8" loading={loading} size={105} css={ 

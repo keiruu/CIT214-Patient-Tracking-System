@@ -294,7 +294,7 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
       setDeets(patientData.map((element) => 
       ({
         col1: (
-          <Link href={'/patient/' + element.id}>
+          <Link href={'/patientdiagnosis/' + element.id}>
             {element.name}
           </Link>
         ),
