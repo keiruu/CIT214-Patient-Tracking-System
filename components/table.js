@@ -9,9 +9,7 @@ import { usePagination } from 'react-table/dist/react-table.development'
 // A great library for fuzzy filtering/sorting items
 import matchSorter from 'match-sorter'
 import React, { useState } from 'react';
-import { db } from '../src/firebase';
 import { useEffect, useMemo } from 'react';
-import { getDocs, collection, getFirestore, query,  } from 'firebase/firestore';
 import { useAuth } from '../src/authContext'
 
 
@@ -294,7 +292,11 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
       // Show table
       setDeets(patientData.map((element) => 
       ({
-        col1: element.name,
+        col1: (
+          <Link href={'/patient/' + element.id}>
+            {element.name}
+          </Link>
+        ),
         col2: element.contactNumber,
         col3: element.date,
         col4: element.visitationTime,

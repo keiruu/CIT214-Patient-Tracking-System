@@ -4,6 +4,7 @@ import { auth } from '../src/firebase'
 import styles from '../styles/Home.module.css'
 import { getDocs, collection, getFirestore, query, where, doc, getDoc  } from 'firebase/firestore';
 import BounceLoader from "react-spinners/BounceLoader";
+import { useRouter } from 'next/router';
 
 const AuthContext = createContext({})
 
@@ -18,15 +19,17 @@ export const AuthContextProvider = ({children}) => {
   const [followupData, setFollowupData] = useState([{}])
   const [patients, setPatients] = useState([{}])
   const [patient, setPatient] = useState()
+  const [patientDiagnosisHistory, setPatientDiagnosisHistory] = useState()
+  const router = useRouter()
 
-  console.log("User ", currentUser)
-  console.log("UID ", userUID)
-  console.log("Display Name ", userName)
-  console.log("patientData ", patientData)
-  console.log("Patients ", patients)
-  console.log("Patient ", patient)
-
-
+  // console.log("User ", currentUser)
+  // console.log("UID ", userUID)
+  // console.log("Display Name ", userName)
+  // console.log("patientData ", patientData)
+  // console.log("Patients ", patients)
+  // console.log("Patient ", patient)
+  console.log("Patient HISTORY ", patientDiagnosisHistory)
+ 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if(user) {
@@ -36,6 +39,12 @@ export const AuthContextProvider = ({children}) => {
         getData()
         getFollowup()
         getAllPatients()
+        if(router.asPath.split("/").length > 2){
+          const route = router.asPath.split("/")
+          const routeID = route[route.length-1]
+          getPatientDiagnosisHistory(routeID)
+        }
+      
       } else {
         setCurrentUser(null)
       }
@@ -45,6 +54,14 @@ export const AuthContextProvider = ({children}) => {
 
     return () => unsubscribe()
   }, [])
+
+  // useEffect(() => {
+  //   if(router.asPath.split("/").length > 2){
+  //     const route = router.asPath.split("/")
+  //     const routeID = route[route.length-1]
+  //     getPatientDiagnosisHistory(routeID)
+  //   }
+  // }, [patientDiagnosisHistory])
 
   const signup = (email, password, name) => {
     return createUserWithEmailAndPassword(auth, email, password)
@@ -112,9 +129,6 @@ export const AuthContextProvider = ({children}) => {
           ...doc.data(),
             id:doc.id
       }))
-      // console.log(diagnosisInfo);
-      console.log("length", diagnosisInfo.length)
-
       if(diagnosisInfo.length > 0) {
         setPatientData(diagnosisInfo)
 
@@ -132,14 +146,11 @@ export const AuthContextProvider = ({children}) => {
     }))
     data.map(async (element)=>{
       const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`), where('followup', '==', true));
-      // const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`))
       const diagnosisDetails = await getDocs(diagnosisQ)
       const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
           ...doc.data(),
             id:doc.id
       }))
-      // console.log(diagnosisInfo);
-      console.log("length", diagnosisInfo.length)
 
       if(diagnosisInfo.length > 0) {
         setFollowupData(diagnosisInfo)
@@ -156,23 +167,12 @@ export const AuthContextProvider = ({children}) => {
     const data = snapshot.docs.map((doc)=>({
         ...doc.data(), id:doc.id
     }))
-    // data.map(async (element)=>{
-    //   const diagnosisQ = query(collection(db, `patientInfo/${element.id}/`));
-    //   // const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`))
-    //   const diagnosisDetails = await getDocs(diagnosisQ)
-    //   const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
-    //       ...doc.data(),
-    //         id:doc.id
-    //   }))
-      // console.log(diagnosisInfo);
-      console.log("length", data.length)
 
-      if(data.length > 0) {
-        setPatients(data)
+    if(data.length > 0) {
+      setPatients(data)
 
-        return patients
-      } 
-    // })
+      return patients
+    }
   }
 
   const getPatient = async (id) => {
@@ -185,11 +185,34 @@ export const AuthContextProvider = ({children}) => {
     setPatient(snapshot.data())
     return snapshot.data()
   }
+
+  const getPatientDiagnosisHistory = async (routeID) => {
+    const db = getFirestore()
+    const q = query(collection(db, 'patientInfo'))
+    const snapshot = await getDocs(q)
+    const data = snapshot.docs.map((doc)=>({
+        ...doc.data(), id:doc.id
+    }))
+    data.map(async (element) => {
+      const diagnosisQ = query(collection(db, `patientInfo/${routeID}/diagnosis`))
+      const diagnosisDetails = await getDocs(diagnosisQ)
+      const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
+          ...doc.data(),
+            id:doc.id
+      }))
+      // if(diagnosisInfo.length > 0) {
+      //   setPatientDiagnosisHistory(diagnosisInfo)
+      //   return patientDiagnosisHistory
+      // }
+      setPatientDiagnosisHistory(diagnosisInfo)
+      return diagnosisInfo
+    })
+  }   
   
   
 
   return (
-    <AuthContext.Provider value={{ getPatient, patient, patients, followupData, getData, patientData, setPatientData, updateDisplayName, updateUserEmail, updateUserPass, currentUser, login, signup, logout, userUID, resetPassword, userName }}>
+    <AuthContext.Provider value={{ getPatientDiagnosisHistory, patientDiagnosisHistory, getPatient, patient, patients, followupData, getData, patientData, setPatientData, updateDisplayName, updateUserEmail, updateUserPass, currentUser, login, signup, logout, userUID, resetPassword, userName }}>
         {loading ? 
             <div className={styles.loader}>
                 <BounceLoader color="#6C71F8" loading={loading} size={105} css={ 

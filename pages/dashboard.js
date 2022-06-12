@@ -12,14 +12,12 @@ function Dashboard () {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-   // useEffect(() => {
-  //   setLoading(true)
-  //   console.log("hey")
-  //   if(!currentUser) {
-  //     // setLoading(true)
-  //     router.push('/login')
-  //   }
-  // }, [])
+   useEffect(() => {
+    if(!currentUser) {
+      // setLoading(true)
+      router.push('/login')
+    }
+  }, [])
 
 
   return (

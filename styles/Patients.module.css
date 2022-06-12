@@ -111,3 +111,18 @@
 .addPatient {
    color: white;
 }
+
+.noHistory {
+  display: flex;
+  justify-content: center;
+}
+
+.noHistory p {
+  color: var(--gray);
+  border: 2px solid var(--gray);
+  padding: 1rem 2rem;
+  width: 30%;
+  text-align: center;
+  border-radius: 10px;
+  margin-top: 3rem;
+}
