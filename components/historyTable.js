@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../styles/Patients.module.css'
 import Link from 'next/link'
-
+import { getDocs, collection, getFirestore, query, where, doc, getDoc  } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMoneyBillTrendUp, faPen, faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { useTable, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
@@ -272,57 +272,55 @@ const History = () => {
   const [ data, setData ] = useState()
   const [ patientHistory, setPatientHistory ] = useState()
   const router = useRouter()
-  
-  // useEffect(() => {
-  //   console.log("data", patientHistory)
-  //   // Show table
-  //   console.log("HERE")
-  //   if(patientHistory) {
-  //     setDeets(patientHistory.map((element) => 
-  //       ({
-  //         col1: element.diagnosis,
-  //         col2: element.date,
-  //         col3: element.visitationTime,
-  //         col4: (
-  //         <div className={styles.actions}>
-  //           <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-  //           <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
-  //         </div>
-  //         )
-  //       })
-  //     ))
-  //   }
-  //   console.log("deets ", deets)
-  // }, [patientHistory])
  
   useEffect(() => {
     const route = router.asPath.split("/")
     const routeID = route[route.length-1]
     console.log("routeID ", routeID)
-    if(patientDiagnosisHistory){
-      handleGet(routeID)
-      console.log("here")
+
+    const getHistory = async (routeID) => {
+      const db = getFirestore()
+      const q = query(collection(db, 'patientInfo'))
+      const snapshot = await getDocs(q)
+      const data = snapshot.docs.map((doc)=>({
+          ...doc.data(), id:doc.id
+      }))
+      data.map(async (element) => {
+        const diagnosisQ = query(collection(db, `patientInfo/${routeID}/diagnosis`))
+        const diagnosisDetails = await getDocs(diagnosisQ)
+        const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
+            ...doc.data(),
+              id:doc.id
+        }))
+
+        if(diagnosisInfo.length > 0) {
+          setDeets(diagnosisInfo.map((element) => 
+            ({
+              col1: element.diagnosis,
+              col2: element.date,
+              col3: element.visitationTime,
+              col4: (
+              <div className={styles.actions}>
+                <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+                <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+              </div>
+              )
+            })
+          ))
+          return diagnosisInfo
+        } else {
+          setDeets(null)
+        }
+      })
+    }  
+
+    const handleGet = async (routeID) => {
+      await getHistory(routeID)
     }
+  
+    handleGet(routeID).catch(console.error)
   }, [])
   
-  const handleGet = async (routeID) => {
-    setPatientHistory(await getPatientDiagnosisHistory(routeID))
-    
-    setDeets(patientDiagnosisHistory.map((element) => 
-        ({
-          col1: element.diagnosis,
-          col2: element.date,
-          col3: element.visitationTime,
-          col4: (
-          <div className={styles.actions}>
-            <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-            <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
-          </div>
-          )
-        })
-      ))
-  }
-
   // Column names
   
   const columns = React.useMemo(
@@ -354,7 +352,11 @@ const History = () => {
 
   return (
     <div>
-     {deets && <Table columns={columns} data={deets} />}
+     {deets ? <Table columns={columns} data={deets}/> : 
+      <div className={styles.noHistory}>
+        <p>Patient has no history yet.</p>
+      </div>
+    }
     </div>
   )
 }

@@ -4,52 +4,80 @@ import Sidebar from '../components/sidebar';
 import Header from '../components/header';
 import styles from '../styles/Dashboard.module.css';
 import { useAuth } from '../src/authContext';
+import { getDocs, collection, getFirestore, query, where, doc, getDoc  } from 'firebase/firestore';
 
 export default function Schedule() {
   const { patientData } = useAuth()
   const [events, setEvents] = useState([{}])
   let ev
+  let eventArray = [{}]
+
   useEffect(() => {
-    console.log("daPATIENAJKDHASKDHJSJta", patientData)
-    if(patientData) {
-      patientData.map((patient, index) => {
-        console.log(patient)
-        const dates = patient.date.split("-")
-        console.log("AJSDHAJKSDHAS", dates)
-        // console.log("AJSDHAJKSDHAS", index + 1) 
-        const start = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${patient.visitationTime}`)
-        const timeSplit = patient.visitationTime.split(":")
-        const timeFirst = parseInt(timeSplit[0])
-        const timeAdd = timeFirst === 12 ? 1 : timeFirst + 1
-        console.log(`time ${timeAdd}:${timeSplit[1]}`)
-        const end = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${timeAdd}:${timeSplit[1]}`)
-        // setEvents([
-        //   {
-        //     event_id: index,
-        //     title: patient.name,
-        //     start: start,
-        //     end: end,
-        //   },
-        // ])
-        setEvents([
-          {
-            event_id: [...events.event_id, index],
-            title: patient.name,
-            start: start,
-            end: end,
-          },
-        ])
-        // ev.push({
-        //   event_id: index,
-        //   title: patient.name,
-        //   start: start,
-        //   end: end,
-        // })
-        console.log("Events ", events)
-        }
-      )
+    const getData = async () => {
+      const db = getFirestore()
+      const q = query(collection(db, 'patientInfo'))
+      const snapshot = await getDocs(q)
+      const data = snapshot.docs.map((doc)=>({
+          ...doc.data(), id:doc.id
+      }))
+      data.map(async (element)=>{
+        const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`))
+        const diagnosisDetails = await getDocs(diagnosisQ)
+        const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
+            ...doc.data(),
+              id:doc.id
+        }))
+        if(diagnosisInfo.length > 0) {
+          diagnosisInfo.map((patient, index) => {
+            const dates = patient.date.split("-")
+            const start = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${patient.visitationTime}`)
+            const timeSplit = patient.visitationTime.split(":")
+            const timeFirst = parseInt(timeSplit[0])
+            const timeAdd = timeFirst === 12 ? 1 : timeFirst + 1
+            console.log(`time ${timeAdd}:${timeSplit[1]}`)
+            const end = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${timeAdd}:${timeSplit[1]}`)
+            eventArray.push({
+              event_id: index,
+              title: patient.name,
+              start: start,
+              end: end,
+            })
+          }
+          )
+          // return diagnosisInfo
+          console.log("INFO ", eventArray)
+          setEvents(eventArray)
+        } 
+      })
     }
 
+    const handleGet = async () => {
+      await getData()
+    }
+
+    // if(patientData) {
+    //   let eventArray = [{}]
+    //   patientData.map((patient, index) => {
+    //     const dates = patient.date.split("-")
+    //     const start = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${patient.visitationTime}`)
+    //     const timeSplit = patient.visitationTime.split(":")
+    //     const timeFirst = parseInt(timeSplit[0])
+    //     const timeAdd = timeFirst === 12 ? 1 : timeFirst + 1
+    //     console.log(`time ${timeAdd}:${timeSplit[1]}`)
+    //     const end = new Date(`${dates[0]} ${dates[1]} ${dates[2]} ${timeAdd}:${timeSplit[1]}`)
+    //     eventArray.push({
+    //       event_id: index,
+    //       title: patient.name,
+    //       start: start,
+    //       end: end,
+    //     })
+        
+    //     setEvents(eventArray)
+    //     }
+    //   )
+    // }
+
+    handleGet().catch(console.error)
   }, [patientData])
   
 

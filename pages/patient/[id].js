@@ -66,12 +66,12 @@ export default function PatientData() {
         }
         <div className={styles.titleB}>
           <div className={styles.titleC}> 
-              <h3>Patient History</h3>
+              <p>Patient History</p>
           </div>
         </div>
 
         <div className={styles.histoTable}>
-          <HistoryTable patientHistory={patientHistory}/>
+          <HistoryTable/>
         </div>
       </div>
     </div>

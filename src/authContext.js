@@ -200,17 +200,14 @@ export const AuthContextProvider = ({children}) => {
           ...doc.data(),
             id:doc.id
       }))
-
-      console.log("Diagnosis info ", diagnosisInfo)
-
       // if(diagnosisInfo.length > 0) {
       //   setPatientDiagnosisHistory(diagnosisInfo)
       //   return patientDiagnosisHistory
       // }
       setPatientDiagnosisHistory(diagnosisInfo)
-      return patientDiagnosisHistory
+      return diagnosisInfo
     })
-  }  
+  }   
   
   
 
