@@ -11,7 +11,7 @@ import matchSorter from 'match-sorter'
 import React, { useState } from 'react';
 import { db } from '../src/firebase';
 import { useEffect, useMemo } from 'react';
-import { getDocs, collection, getFirestore, query,  } from 'firebase/firestore';
+import { getDocs, collection, getFirestore, query, where} from 'firebase/firestore';
 import { useAuth } from '../src/authContext'
 
 
@@ -278,29 +278,107 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
     const [diagnosisData, setDiagnosisData] = useState([{}])
     const { followupData } = useAuth()
     const [ deets, setDeets ] = useState()
-    
+    let eventArray = [{}]
     useEffect(() => {
       console.log("follow", followupData)
       
-      setDeets(followupData.map((element) => 
-        ({
-          col1: (
-            <Link href={'/patient/' + element.id}>
-              {element.name}
-            </Link>
-          ),
-          col2: element.contactNumber,
-          col3: element.followupDate,
-          col4: element.diagnosis,
-          col6: (
-          <div className={styles.actions}>
-            <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
-            <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-            <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
-          </div>
-          )
+      const getHistory = async () => {
+        const db = getFirestore()
+        const q = query(collection(db, 'patientInfo'))
+        const snapshot = await getDocs(q)
+        const data = snapshot.docs.map((doc)=>({
+            ...doc.data(), id:doc.id
+        }))
+        data.map(async (element) => {
+          const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`), where('followup', '==', true))
+          const diagnosisDetails = await getDocs(diagnosisQ)
+          const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
+              ...doc.data(),
+                id:doc.id
+          }))
+  
+          if(diagnosisInfo.length > 0) {
+            console.log("Eto lods", diagnosisInfo)
+            diagnosisInfo.map((element) => {
+              eventArray.push(element)
+            })
+            // return diagnosisInfo
+          }
+          console.log(eventArray)
+          eventArray.map((element) => 
+          {
+            if(element != undefined){
+              setDeets(eventArray.map((element) => 
+              {
+                if(element.date != undefined) {
+                  const datentime = element.date.split("T")
+                  const date = datentime[0]
+                  const time = datentime[1]
+                  return ({
+                    col1: (
+                      <button className={styles.plain} onClick={() => windows.location.assign("http://localhost:3000/patients")}>
+                        {element.name}
+                      </button>
+                    ),
+                    col3: element.date,
+                    col4: element.diagnosis,
+                    // col6: (
+                    // <div className={styles.actions}>
+                    //   <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
+                    //   <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+                    //   <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+                    // </div>
+                    // )
+                  })
+                } else {
+                  return ({
+                    col1: (
+                      <button className={styles.plain} onClick={() => windows.location.assign("http://localhost:3000/patients")}>
+                        {element.name}
+                      </button>
+                    ),
+                    col3: element.followupDate,
+                    col4: element.diagnosis,
+                    // col6: (
+                    // <div className={styles.actions}>
+                    //   <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
+                    //   <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+                    //   <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+                    // </div>
+                    // )
+                  })
+                }
+              }
+              ))
+            } else {
+              console.log("null")
+            }
+          }
+        )
+          
         })
-      ))
+      
+        // setDeets(eventArray.map((element) => 
+        //   ({
+        //     col1: element.name,
+        //     col2: element.date,
+        //     col3: element.visitationTime,
+        //     col4: element.diagnosis,
+        //     col5: (
+        //     <div className={styles.actions}>
+        //       <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+        //       <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+        //     </div>
+        //     )
+        //   })
+        // ))
+      }  
+  
+      const handleGet = async () => {
+        await getHistory()
+      }
+    
+      handleGet().catch(console.error)
     console.log("deets ", deets)
     }, [followupData])
 
@@ -312,10 +390,6 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
         accessor: 'col1', // accessor is the "key" in the data
       },
       {
-        Header: 'Contact Number',
-        accessor: 'col2',
-      },
-      {
         Header: 'Follow-up checkup date',
         accessor: 'col3', 
       },
@@ -323,10 +397,10 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
         Header: 'Diagnosis',
         accessor: 'col4',
       },
-      {
-        Header: 'Actions',
-        accessor: 'col6',
-      },
+      // {
+      //   Header: 'Actions',
+      //   accessor: 'col6',
+      // },
     ],
     []
   )

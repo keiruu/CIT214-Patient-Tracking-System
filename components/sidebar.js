@@ -26,7 +26,7 @@ function Sidebar() {
 
           <div className={styles.logo}>
             <Link href="/dashboard" passHref>
-            <Image src={logo} alt="Logo"/>
+            <Image src={logo} alt="Logo" width={60} height={60}/>
             </Link>
           </div>
 
@@ -49,14 +49,14 @@ function Sidebar() {
               </Link>
             </span>
 
-            {/* <span>
+            <span>
               <Link href='/patientsHistory' passHref>
                 <div className={router.pathname == "/patientsHistory" ? styles.active : styles.inactive}>
                 <FontAwesomeIcon icon={faUserClock} size={size} />
                 <span>Patient History</span>
                 </div>
               </Link>
-            </span> */}
+            </span>
 
 
             <span>

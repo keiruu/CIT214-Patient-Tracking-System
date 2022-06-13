@@ -136,31 +136,6 @@ export const AuthContextProvider = ({children}) => {
         return patientData
       } 
     })
-    // const db = getFirestore()
-    // const q = query(collection(db, 'patientInfo'))
-    // const snapshot = await getDocs(q)
-    // const data = snapshot.docs.map((doc)=>({
-    //     ...doc.data(), id:doc.id
-    // }))
-    // data.map(async (element)=>{
-    //   const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`))
-    //   const diagnosisDetails = await getDocs(diagnosisQ)
-    //   const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
-    //       ...doc.data(),
-    //         id:doc.id
-    //   }))
-    //   if(diagnosisInfo.length > 0) {
-    //     diagnosisInfo.map((element) => {
-    //       eventArray.push(element)
-    //     })
-    //     eventArray.map((element) => {
-    //       console.log("go ", element.date)
-    //     })
-    //     setPatientData(eventArray)
-    //   } 
-    // })
-    // console.log("ARRAY ", eventArray)
-    // return patientData
   }
 
   const getFollowup = async () => {

@@ -30,8 +30,7 @@ function Header() {
     <div className={styles.container}>
         <div className={styles.linedContainer}>
           <div className={styles.greeting}>
-            <h2>Good day, Dr. {doctor.firstName} {doctor.lastName}</h2>
-            <p>Start your day with a SMILE beacause HAPPINESS is the <br/> best MEDICINE!</p>
+            <h2>TXJ Clinic Patient Tracking System</h2>
           </div>
 
           <div className={styles.end}>

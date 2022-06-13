@@ -131,3 +131,10 @@
   background: none;
   border: none;
 }
+
+.plain {
+  background: none;
+  border: none;
+  font-family: 'Lato';
+  font-size: 16px;
+}

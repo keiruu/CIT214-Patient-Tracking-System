@@ -11,6 +11,8 @@ import matchSorter from 'match-sorter'
 import React, { useState } from 'react';
 import { useEffect, useMemo } from 'react';
 import { useAuth } from '../src/authContext'
+import { useRouter } from 'next/router'
+import { getDocs, collection, getFirestore, query, where, doc, getDoc  } from 'firebase/firestore';
 
 
 // Define a default UI for filtering
@@ -287,56 +289,135 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
     const [diagnosisData, setDiagnosisData] = useState([{}])
     const { patientData } = useAuth()
     const [ deets, setDeets ] = useState()
-    
-    useEffect(() => {
-      console.log("data", patientData)
-      // Show table
-      setDeets(patientData.map((element) => 
-      {
-        console.log("eelkjlk", JSON.stringify(element))
-        const datentime = element.date.split("T")
-        const date = datentime[0]
-        const time = datentime[1]
-        return ({
-          col1: (
-            <Link href={'/patientdiagnosis/' + element.id}>
-              {element.name}
-            </Link>
-          ),
-          col3: date,
-          col4: time,
-          col5: element.diagnosis,
-          col6: (
-          <div className={styles.actions}>
-            <Link href={'/diagnosis/' + element.id}>          
-              <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
-            </Link>
-            <button className={styles.delete} onClick={() => { 
-              window.location.assign('http://localhost:3000/diagnosis/edit/' + element.id)
-            }}>
-              <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-            </button>
-            <button className={styles.delete} onClick={() => {
-              console.log("triggered")
-              deletePatient(element.id)
-              toast.success("Successfully deleted patient", {
-                position: toast.POSITION.BOTTOM_RIGHT
-              });
-              setInterval(() => {
-                window.location.reload();
-              }, 1000);
-            }}>
-              <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
-            </button>
-          </div>
-          )
-        })
-      }
-    ))
-    console.log("deets ", deets)
-    }, [patientData])
+    const router = useRouter()
+    // useEffect(() => {
+    //   console.log("data", patientData)
+    //   // Show table
+    //   setDeets(patientData.map((element) => 
+    //   {
+    //     console.log("eelkjlk", JSON.stringify(element))
+    //     const datentime = element.date.split("T")
+    //     const date = datentime[0]
+    //     const time = datentime[1]
+    //     return ({
+    //       col1: (
+    //         <Link href={'/patientdiagnosis/' + element.id}>
+    //           {element.name}
+    //         </Link>
+    //       ),
+    //       col3: date,
+    //       col4: time,
+    //       col5: element.diagnosis,
+    //       col6: (
+    //       <div className={styles.actions}>
+    //         <Link href={'/diagnosis/' + element.id}>          
+    //           <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
+    //         </Link>
+    //         <button className={styles.delete} onClick={() => { 
+    //           window.location.assign('http://localhost:3000/diagnosis/edit/' + element.id)
+    //         }}>
+    //           <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+    //         </button>
+    //         <button className={styles.delete} onClick={() => {
+    //           console.log("triggered")
+    //           deletePatient(element.id)
+    //           toast.success("Successfully deleted patient", {
+    //             position: toast.POSITION.BOTTOM_RIGHT
+    //           });
+    //           setInterval(() => {
+    //             window.location.reload();
+    //           }, 1000);
+    //         }}>
+    //           <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+    //         </button>
+    //       </div>
+    //       )
+    //     })
+    //   }
+    // ))
+    // console.log("deets ", deets)
+    // }, [patientData])
 
   // Column names
+    let eventArray = [{}]
+  useEffect(() => {
+
+    const getHistory = async () => {
+      const db = getFirestore()
+      const q = query(collection(db, 'patientInfo'))
+      const snapshot = await getDocs(q)
+      const data = snapshot.docs.map((doc)=>({
+          ...doc.data(), id:doc.id
+      }))
+      data.map(async (element) => {
+        const diagnosisQ = query(collection(db, `patientInfo/${element.id}/diagnosis`))
+        const diagnosisDetails = await getDocs(diagnosisQ)
+        const diagnosisInfo = diagnosisDetails.docs.map((doc)=>({
+            ...doc.data(),
+              id:doc.id
+        }))
+
+        if(diagnosisInfo.length > 0) {
+          console.log("Eto lods", diagnosisInfo)
+          diagnosisInfo.map((element) => {
+            eventArray.push(element)
+          })
+          // return diagnosisInfo
+        }
+        eventArray.map((element) => 
+        {
+          if(element != undefined){
+            setDeets(eventArray.map((element) => 
+            {
+              console.log(element.date)
+              if(element.date != undefined){
+                const datentime = element.date.split("T")
+                const date = datentime[0]
+                const time = datentime[1]
+                return ({
+                  col1: element.name,
+                  col2: date,
+                  col3: time,
+                  col4: element.diagnosis,
+                  // col5: (
+                  // <div className={styles.actions}>
+                  //   <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+                  //   <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+                  // </div>
+                  // )
+                })
+              } else {
+                return ({
+                  col1: element.name,
+                  col2: element.date,
+                  col3: element.visitationTime,
+                  col4: element.diagnosis,
+                  // col5: (
+                  // <div className={styles.actions}>
+                  //   <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
+                  //   <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
+                  // </div>
+                  // )
+                })
+              }
+            }
+          ))
+          } else {
+            console.log("null")
+          }
+        }
+      )
+        
+      })
+    }  
+
+    const handleGet = async () => {
+      await getHistory()
+    }
+  
+    handleGet().catch(console.error)
+  }, [])
+  
   const columns = React.useMemo(
     () => [
       {
@@ -345,20 +426,20 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
       },
       {
         Header: 'Date',
-        accessor: 'col3', 
+        accessor: 'col2', 
       },
       {
         Header: 'Visitation Time',
-        accessor: 'col4',
+        accessor: 'col3',
       },
       {
         Header: 'Latest Diagnosis',
-        accessor: 'col5',
+        accessor: 'col4',
       },
-      {
-        Header: 'Actions',
-        accessor: 'col6',
-      },
+      // {
+      //   Header: 'Actions',
+      //   accessor: 'col5',
+      // },
     ],
     []
   )
@@ -369,6 +450,7 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
   return (
     <div>
       {deets && <Table columns={columns} data={deets} />}
+      
     </div>
   )
   }
