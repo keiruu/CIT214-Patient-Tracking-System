@@ -16,11 +16,40 @@
 .head {
   background-color:  #EBEAFF;
   margin: 2rem;
-  padding: 2rem 3rem;
+  padding: 3rem 3rem;
   padding-bottom: 1rem;
   border-radius: 15px;
 }
 
 .head p {
   font-size: 16px;
+}
+
+.numbers {
+  border: 2px solid #EBEAFF;
+  margin: 0 2rem;
+  width: 50%;
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  display: flex;
+  gap: 3rem;
+}
+
+.num {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.flex {
+  display: flex;
+}
+
+.time {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #d6d3ff;
+  margin-right: 2rem;
+    border-radius: 15px;
 }

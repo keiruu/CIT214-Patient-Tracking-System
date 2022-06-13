@@ -290,53 +290,6 @@ filterGreaterThan.autoRemove = val => typeof val !== 'number'
     const { patientData } = useAuth()
     const [ deets, setDeets ] = useState()
     const router = useRouter()
-    // useEffect(() => {
-    //   console.log("data", patientData)
-    //   // Show table
-    //   setDeets(patientData.map((element) => 
-    //   {
-    //     console.log("eelkjlk", JSON.stringify(element))
-    //     const datentime = element.date.split("T")
-    //     const date = datentime[0]
-    //     const time = datentime[1]
-    //     return ({
-    //       col1: (
-    //         <Link href={'/patientdiagnosis/' + element.id}>
-    //           {element.name}
-    //         </Link>
-    //       ),
-    //       col3: date,
-    //       col4: time,
-    //       col5: element.diagnosis,
-    //       col6: (
-    //       <div className={styles.actions}>
-    //         <Link href={'/diagnosis/' + element.id}>          
-    //           <FontAwesomeIcon icon={faFileCirclePlus} size={size} className={styles.add} />
-    //         </Link>
-    //         <button className={styles.delete} onClick={() => { 
-    //           window.location.assign('http://localhost:3000/diagnosis/edit/' + element.id)
-    //         }}>
-    //           <FontAwesomeIcon icon={faPen} size={size} className={styles.edit} />
-    //         </button>
-    //         <button className={styles.delete} onClick={() => {
-    //           console.log("triggered")
-    //           deletePatient(element.id)
-    //           toast.success("Successfully deleted patient", {
-    //             position: toast.POSITION.BOTTOM_RIGHT
-    //           });
-    //           setInterval(() => {
-    //             window.location.reload();
-    //           }, 1000);
-    //         }}>
-    //           <FontAwesomeIcon icon={faTrash} size={size} className={styles.delete} />
-    //         </button>
-    //       </div>
-    //       )
-    //     })
-    //   }
-    // ))
-    // console.log("deets ", deets)
-    // }, [patientData])
 
   // Column names
     let eventArray = [{}]
